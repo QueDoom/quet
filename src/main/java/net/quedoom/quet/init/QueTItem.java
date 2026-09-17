@@ -1,15 +1,19 @@
 package net.quedoom.quet.init;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.quedoom.quet.QueT;
 
+import java.util.Properties;
 import java.util.function.Function;
 
 public class QueTItem extends ModRegistrator {
@@ -53,10 +57,44 @@ public class QueTItem extends ModRegistrator {
     }
     protected static Item registerSpawnEgg(String name, EntityType entity) {
         return registerSpawnEgg(name, entity, new Item.Properties());
-   }
+    }
+
+    protected static Item registerFood(String name, FoodProperties food, Consumable consumable) {
+        return register(name, p -> new Item(p.food(food, consumable)));
+    }
+
+    protected static Item registerSword(String name, ToolMaterial material) {
+        return register(create(name), Item::new, new Item.Properties().sword(material, 3.0F, -2.4F).stacksTo(1));
+    }
+    protected static Item registerPickaxe(String name, ToolMaterial material) {
+        return register(create(name), Item::new, new Item.Properties().pickaxe(material, 1.0F, -2.8F).stacksTo(1));
+    }
+    protected static Item registerAxe(String name, ToolMaterial material) {
+        return register(create(name), p -> new AxeItem(material, 6.0F, -3.2F, p), new Item.Properties().stacksTo(1));
+    }
+    protected static Item registerShovel(String name, ToolMaterial material) {
+        return register(create(name), p -> new ShovelItem(material, 1.5F, -3.0F, p), new Item.Properties().stacksTo(1));
+    }
+    protected static Item registerHoe(String name, ToolMaterial material) {
+        return register(create(name), p -> new HoeItem(material, 0.0F, -3.0F, p), new Item.Properties().stacksTo(1));
+    }
+
+    protected static Item registerShears(String name, int maxDamage) {
+        return register(create(name), ShearsItem::new, new Item.Properties().durability(maxDamage).component(DataComponents.TOOL, ShearsItem.createToolProperties()));
+    }
+    protected static Item registerShears(String name) {
+        return registerShears(name, 238);
+    }
+
+    protected static Item registerBrush(String name, int maxDamage) {
+        return register(create(name), BrushItem::new, new Item.Properties().durability(maxDamage));
+    }
+    protected static Item registerBrush(String name) {
+        return registerBrush(name, 64);
+    }
 
 
-    protected static ResourceKey<Item> create(String name) {
+        protected static ResourceKey<Item> create(String name) {
         if (ModRegistrator.namespace() == null) {
             throw new NullPointerException("Unset namespace in " + QueTItem.class);
         }

@@ -5,16 +5,23 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-public interface PathMethods {
-    public default String getPath(Block block) {
+public class GetPath {
+    /**
+     * Takes a Block, Item or Tag and gives the path of it <br>
+     * Example: Blocks.DIRT -> minecraft:dirt -> dirt
+     *
+     * @return The path of the inputted Block, Item or Tag
+     */
+    public static String get(Block block) {
         return BuiltInRegistries.BLOCK.getKey(block).getPath();
     }
 
-    public default String getPath(Item item) {
+    public static String get(Item item) {
         return BuiltInRegistries.ITEM.getKey(item).getPath();
     }
 
-    public default String getPath(TagKey<?> tagKey) {
+    public static String get(TagKey<?> tagKey) {
         return tagKey.location().getPath();
     }
+
 }

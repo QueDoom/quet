@@ -7,18 +7,63 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 import java.util.function.Function;
 
 public class QueTBlock extends ModRegistrator{
-    protected static Block registerStair(String name, Block block) {
-        return register(name, p -> new StairBlock(block.defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(block));
+    protected static Block registerStair(String name, Block baseBlock) {
+        return register(name, p -> new StairBlock(baseBlock.defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
+    }
+
+    protected static Block registerSlab(String name, Block baseBlock) {
+        return register(name, SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+    }
+
+    protected static Block registerButton(String name, BlockSetType type, int ticksToStayPressed, Block baseBlock) {
+        return register(name, p -> new ButtonBlock(type, ticksToStayPressed, p), Blocks.buttonProperties());
+    }
+    protected static Block registerStoneButton(String name, BlockSetType type) {
+        return register(name, p -> new ButtonBlock(type, 20, p), Blocks.buttonProperties());
+    }
+    protected static Block registerWoodenButton(String name, BlockSetType type) {
+        return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties());
+    }
+    protected static Block registerLever(String name) {
+        return register(name, LeverBlock::new, Blocks.buttonProperties());
+    }
+
+    protected static Block registerPressurePlate(String name, BlockSetType type, MapColor mapColor) {
+        return register(name, p -> new PressurePlateBlock(type, p), BlockBehaviour.Properties.of()
+                .forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(mapColor));
+    }
+    protected static Block registerPressurePlate(String name, BlockSetType type, Block baseBlock) {
+        return register(name, p -> new PressurePlateBlock(type, p), BlockBehaviour.Properties.of()
+                .forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(baseBlock.defaultMapColor()));
+    }
+
+    protected static Block registerFence(String name, Block baseBlock) {
+        return register(name, FenceBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+    }
+    protected static Block registerFenceGate(String name, WoodType type, Block baseBlock) {
+        return register(name, p -> new FenceGateBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
+    }
+    protected static Block registerWall(String name, Block baseBlock) {
+        return register(name, WallBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+    }
+
+    protected static Block registerDoor(String name, BlockSetType type, Block baseBlock) {
+        return register(name, p -> new DoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock)
+                .pushReaction(PushReaction.DESTROY).strength(3.0F).noOcclusion());
+    }
+    protected static Block registerTrapdoor(String name, BlockSetType type, Block baseBlock) {
+        return register(name, p -> new TrapDoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock).noOcclusion().isValidSpawn(Blocks::never));
     }
 
     protected static Item registerItem(String name, Block block, Item.Properties properties) {
@@ -68,7 +113,6 @@ public class QueTBlock extends ModRegistrator{
     protected static Block registerFluid(String name, FlowingFluid fluid) {
         return registerFluid(name, fluid, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER));
     }
-
     protected static Block registerFluid(String name, FlowingFluid fluid, BlockBehaviour.Properties properties) {
         return register(name,
                 p -> new LiquidBlock(fluid, p),

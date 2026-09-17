@@ -9,11 +9,11 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.quedoom.quet.misc.PathMethods;
+import net.quedoom.quet.misc.LocalizedGetPath;
 
 import java.util.concurrent.CompletableFuture;
 
-public abstract class QueTRecipeGen extends FabricRecipeProvider implements PathMethods {
+public abstract class QueTRecipeGen extends FabricRecipeProvider implements LocalizedGetPath {
     public QueTRecipeGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
