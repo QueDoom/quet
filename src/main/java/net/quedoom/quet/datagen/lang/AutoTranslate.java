@@ -1,4 +1,4 @@
-package net.quedoom.quet.datagen;
+package net.quedoom.quet.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.resources.ResourceKey;
@@ -10,7 +10,13 @@ import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
+import java.util.List;
+
 public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
+
+    public static AutoTranslate of(FabricLanguageProvider.TranslationBuilder builder) {
+        return new AutoTranslate(builder, ModRegistrator.namespace());
+    }
 
     public static AutoTranslate of(FabricLanguageProvider.TranslationBuilder builder, String namespace) {
         return new AutoTranslate(builder, namespace);
@@ -36,8 +42,30 @@ public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, S
 
     }
 
+    /**
+     * Auto translates all items set to be auto translated. <br>
+     * You can add items to the list by appending true while registering items. <br>
+     * <p><strong>Should always be called at the top of the LanguageProvider</strong></p>
+     * Example: register("name", true);
+     */
+    public void addInStorage() {
+        List<Item> items = QueTObjectStorage.autotranslateItems();
+        if (items.isEmpty()) {
+            ModRegistrator.logInfo("No Items set to be auto translated in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            return;
+        }
+        for (Item item : items) {
+            add(item);
+        }
+    }
+
     public void translateAllTabs() {
-        for (ResourceKey<CreativeModeTab> tab : QueTObjectStorage.getTabs()) {
+        List<ResourceKey<CreativeModeTab>> tabs = QueTObjectStorage.getTabs();
+        if (tabs.isEmpty()) {
+            ModRegistrator.logInfo("No tabs registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            return;
+        }
+        for (ResourceKey<CreativeModeTab> tab : tabs) {
             add(tab);
         }
     }
@@ -51,8 +79,9 @@ public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, S
      * @param snakeCase The string to make Title Case (example_string)
      * @return The Title Case version of the parameter
      */
-    private String snakeToTitleCase(String snakeCase) {
-        String replaceUnderscores = snakeCase.replace('_', ' ');
+    public static String snakeToTitleCase(String snakeCase) {
+        String replaceDashes = snakeCase.replace('-', ' ');
+        String replaceUnderscores = replaceDashes.replace('_', ' ');
         String[] words = replaceUnderscores.split(" ");
         StringBuilder result = new StringBuilder();
         for (String word : words) {

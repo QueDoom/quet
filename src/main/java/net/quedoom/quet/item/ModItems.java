@@ -5,6 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.material.Fluids;
 import net.quedoom.quet.init.QueTItem;
 
 import java.util.function.Consumer;
@@ -17,5 +18,7 @@ public class ModItems extends QueTItem {
             qtTooltip.addShift();
         }
     });
+
+    public static final Item BUCKET_ITEM = registerBucket("bucket_item", Fluids.WATER);
 
 }

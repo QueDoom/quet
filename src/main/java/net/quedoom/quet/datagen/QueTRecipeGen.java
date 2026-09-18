@@ -24,9 +24,4 @@ public abstract class QueTRecipeGen extends FabricRecipeProvider implements Loca
                 .group(getPath(out.asItem()))
                 .save(output, out + "_from_campfire");
     }
-
-    @Override
-    public String getName() {
-        return "";
-    }
 }

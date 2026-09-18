@@ -27,6 +27,6 @@ public class QueTCreativeTab extends ModRegistrator {
 
     protected static void connectEntries(CreativeModeTab tab, ResourceKey<CreativeModeTab> key) {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
-        //QueTObjectStorage.addTab(key);
+        QueTObjectStorage.addTab(key);
     }
 }

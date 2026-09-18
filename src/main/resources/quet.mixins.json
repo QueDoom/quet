@@ -3,7 +3,7 @@
 	"package": "net.quedoom.quet.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+      "RemindToClearStorage"
 	],
 	"injectors": {
 		"defaultRequire": 1

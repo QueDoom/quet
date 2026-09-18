@@ -1,18 +1,15 @@
 package net.quedoom.quet.item;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.quedoom.quet.datagen.lang.AutoTranslate;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
 import net.quedoom.quet.misc.GetPath;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implements LocalizedGetPath {
@@ -40,7 +37,7 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
 
     /**
      * Adds a tooltip to the item: <br>
-     * It requires you to translate the following key ({@link net.quedoom.quet.datagen.AutoTranslate} has a method for this)
+     * It requires you to translate the following key ({@link AutoTranslate} has a method for this)
      *
      * @param item Determines what the key will look like (example: "tooltip.namespace.item")
      */

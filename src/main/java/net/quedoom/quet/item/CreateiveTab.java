@@ -9,6 +9,7 @@ public class CreateiveTab extends QueTCreativeTab {
 
     public static final CreativeModeTab TEST_TAB = register(ModItems.TEST_ITEM, "test_tab", ((parameters, output) -> {
         output.accept(ModItems.TEST_ITEM);
+        output.accept(ModItems.BUCKET_ITEM);
     }));
 
     public static void register() {

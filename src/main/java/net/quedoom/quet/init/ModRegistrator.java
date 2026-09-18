@@ -1,7 +1,11 @@
 package net.quedoom.quet.init;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ModRegistrator {
-    private static String namespace = null;
+    private static String NAMESPACE = null;
+    public static Logger LOGGER = null;
 
     /**
      * You need to set this in the beginning, where you see the <br>
@@ -11,13 +15,25 @@ public class ModRegistrator {
      * @return The parameter input, this is just a neat way of calling the method
      */
     public static String namespace() {
-        if (namespace == null) {
+        if (NAMESPACE == null) {
             throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
         }
-        return namespace;
+        return NAMESPACE;
+    }
+    public static Logger logger() {
+        if (LOGGER == null) {
+            if (NAMESPACE == null) {
+                throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
+            }
+            LOGGER = LoggerFactory.getLogger(NAMESPACE);
+        }
+        return LOGGER;
+    }
+    public static void logInfo(String string) {
+        logger().info(string);
     }
     public static String setNamespace(String namespace) {
-        ModRegistrator.namespace = namespace;
+        ModRegistrator.NAMESPACE = namespace;
         return namespace;
     };
 

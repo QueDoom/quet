@@ -17,7 +17,6 @@ public class QueT extends ModRegistrator implements ModInitializer {
 	public void onInitialize() {
 		ModItems.register();
 		CreateiveTab.register();
-		//QueTObjectStorage.addTab(CreateiveTab.TEST_KEY);
 	}
 
 }
