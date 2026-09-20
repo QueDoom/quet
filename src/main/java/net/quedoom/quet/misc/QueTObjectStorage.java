@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.quedoom.quet.datagen.tag.QTItemTagProvider;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class QueTObjectStorage {
         REGISTERED_CHESTPLATES = new ArrayList<>();
         REGISTERED_LEGGINGS = new ArrayList<>();
         REGISTERED_BOOTS = new ArrayList<>();
+        REGISTERED_HORSE_ARMOR = new ArrayList<>();
+        REGISTERED_WOLF_ARMOR = new ArrayList<>();
         AUTOTRANSLATE_ITEMS = new ArrayList<>();
         REGISTERED_SWORDS = new ArrayList<>();
         REGISTERED_AXES = new ArrayList<>();
@@ -31,6 +34,11 @@ public class QueTObjectStorage {
         REGISTERED_SHOVELS = new ArrayList<>();
         REGISTERED_HOES = new ArrayList<>();
         REGISTERED_SPEARS = new ArrayList<>();
+        REGISTERED_SHEARS = new ArrayList<>();
+        REGISTERED_BRUSHES = new ArrayList<>();
+        REGISTERED_BOWS = new ArrayList<>();
+        REGISTERED_CROSSBOWS = new ArrayList<>();
+        REGISTERED_CROPS = new ArrayList<>();
     }
 
     //region Autotranslate
@@ -42,6 +50,19 @@ public class QueTObjectStorage {
         return AUTOTRANSLATE_ITEMS;
     }
     //endregion Autotranslate
+
+    //region Blocks
+    private static List<Block> REGISTERED_CROPS = new ArrayList<>();
+
+    public static List<Block> crops() {
+        return REGISTERED_CROPS;
+    }
+
+    public static void addCrop(Block block) {
+        REGISTERED_CROPS.add(block);
+    }
+
+    //endregion Blocks
 
     //region Buckets
     /**
@@ -71,6 +92,8 @@ public class QueTObjectStorage {
     private static List<Item> REGISTERED_CHESTPLATES = new ArrayList<>();
     private static List<Item> REGISTERED_LEGGINGS = new ArrayList<>();
     private static List<Item> REGISTERED_BOOTS = new ArrayList<>();
+    private static List<Item> REGISTERED_HORSE_ARMOR = new ArrayList<>();
+    private static List<Item> REGISTERED_WOLF_ARMOR = new ArrayList<>();
 
     public static List<Item> helmets() {
         return REGISTERED_HELMETS;
@@ -83,6 +106,12 @@ public class QueTObjectStorage {
     }
     public static List<Item> boots() {
         return REGISTERED_BOOTS;
+    }
+    public static List<Item> horse_armors() {
+        return REGISTERED_HORSE_ARMOR;
+    }
+    public static List<Item> wolf_armors() {
+        return REGISTERED_WOLF_ARMOR;
     }
 
     public static void addHelmet(Item item) {
@@ -103,7 +132,12 @@ public class QueTObjectStorage {
         addLeggings(leggings);
         addBoots(boots);
     }
-
+    public static void addHorseArmor(Item item) {
+        REGISTERED_HORSE_ARMOR.add(item);
+    }
+    public static void addWolfArmor(Item item) {
+        REGISTERED_WOLF_ARMOR.add(item);
+    }
     //endregion Armor
 
     //region Tools and Weapons
@@ -113,6 +147,10 @@ public class QueTObjectStorage {
     private static List<Item> REGISTERED_AXES = new ArrayList<>();
     private static List<Item> REGISTERED_HOES = new ArrayList<>();
     private static List<Item> REGISTERED_SPEARS = new ArrayList<>();
+    private static List<Item> REGISTERED_SHEARS = new ArrayList<>();
+    private static List<Item> REGISTERED_BRUSHES = new ArrayList<>();
+    private static List<Item> REGISTERED_BOWS = new ArrayList<>();
+    private static List<Item> REGISTERED_CROSSBOWS = new ArrayList<>();
 
     public static List<Item> swords() {
         return REGISTERED_SWORDS;
@@ -132,6 +170,18 @@ public class QueTObjectStorage {
     public static List<Item> spears() {
         return REGISTERED_SPEARS;
     }
+    public static List<Item> shears() {
+        return REGISTERED_SHEARS;
+    }
+    public static List<Item> brushes() {
+        return REGISTERED_BRUSHES;
+    }
+    public static List<Item> bows() {
+        return REGISTERED_BOWS;
+    }
+    public static List<Item> crossbows() {
+        return REGISTERED_CROSSBOWS;
+    }
 
     public static void addSword(Item item) {
         REGISTERED_SWORDS.add(item);
@@ -150,6 +200,18 @@ public class QueTObjectStorage {
     }
     public static void addSpear(Item item) {
         REGISTERED_SPEARS.add(item);
+    }
+    public static void addShear(Item item) {
+        REGISTERED_SHEARS.add(item);
+    }
+    public static void addBrush(Item item) {
+        REGISTERED_BRUSHES.add(item);
+    }
+    public static void addBow(Item item) {
+        REGISTERED_BOWS.add(item);
+    }
+    public static void addCrossbow(Item item) {
+        REGISTERED_CROSSBOWS.add(item);
     }
 
     //endregion Tools and Weapons
