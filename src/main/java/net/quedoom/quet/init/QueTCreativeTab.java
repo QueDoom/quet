@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.quedoom.quet.item.CreateiveTab;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
 public class QueTCreativeTab extends ModRegistrator {

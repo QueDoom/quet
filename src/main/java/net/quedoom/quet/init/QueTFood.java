@@ -11,17 +11,17 @@ public class QueTFood extends ModRegistrator {
 
 
     protected static Consumable.Builder food() {
-        return Consumables.defaultFood();
+        return FOOD;
     }
     protected static Consumable foodDotBuild() {
-        return Consumables.defaultFood().build();
+        return FOOD.build();
     }
 
     protected static Consumable.Builder food(ApplyStatusEffectsConsumeEffect effects) {
-        return Consumables.defaultFood().onConsume(effects);
+        return FOOD.onConsume(effects);
     }
     protected static Consumable foodDotBuild(ApplyStatusEffectsConsumeEffect effects) {
-        return Consumables.defaultFood().onConsume(effects).build();
+        return FOOD.onConsume(effects).build();
     }
 
     protected static Consumable.Builder drink() {
