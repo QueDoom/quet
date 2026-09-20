@@ -6,7 +6,6 @@ import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -23,8 +22,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.concurrent.CompletableFuture;
 
-public abstract class QTBlockStateLootProvider extends FabricBlockLootSubProvider {
-    protected QTBlockStateLootProvider(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public abstract class QueTBlockStateLootProvider extends FabricBlockLootSubProvider {
+    protected QueTBlockStateLootProvider(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(packOutput, registriesFuture);
     }
 

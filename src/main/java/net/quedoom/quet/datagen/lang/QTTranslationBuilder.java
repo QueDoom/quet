@@ -1,10 +1,12 @@
 package net.quedoom.quet.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -15,62 +17,73 @@ import net.quedoom.quet.misc.QueTObjectStorage;
 
 import java.util.List;
 
-public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
+public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
     public static boolean SHOULD_AUTO_TRANSLATE_BY_DEFAULT = false;
 
 
-    public static AutoTranslate of(FabricLanguageProvider.TranslationBuilder builder) {
-        return new AutoTranslate(builder, ModRegistrator.namespace());
+    public static QTTranslationBuilder of(FabricLanguageProvider.TranslationBuilder builder) {
+        return new QTTranslationBuilder(builder, ModRegistrator.namespace());
     }
 
-    public static AutoTranslate of(FabricLanguageProvider.TranslationBuilder builder, String namespace) {
-        return new AutoTranslate(builder, namespace);
+    public static QTTranslationBuilder of(FabricLanguageProvider.TranslationBuilder builder, String namespace) {
+        return new QTTranslationBuilder(builder, namespace);
     }
 
-    public void add(Block block) {
+    public void auto(Block block) {
         String snakeCase = getPath(block);
         this.builder.add(block, snakeToTitleCase(snakeCase));
     }
-    public void add(Item item) {
+    public void auto(Item item) {
         String snakeCase = getPath(item);
         this.builder.add(item, snakeToTitleCase(snakeCase));
     }
-    public void add(TagKey<?> tag) {
+    public void auto(TagKey<?> tag) {
         String translateLeft = tag.getTranslationKey();
         String snakeCase = getPath(tag);
         this.builder.add(translateLeft, snakeToTitleCase(snakeCase));
     }
 
-    public void add(ResourceKey<CreativeModeTab> tab) {
+    public void auto(ResourceKey<CreativeModeTab> tab) {
         String translateLeft = namespace + ".creativeModeTab." + tab.identifier().getNamespace();
         this.builder.add(translateLeft, snakeToTitleCase(tab.identifier().getNamespace()));
+    }
+
+    public void addEffect(String name, String title, String description) {
+        String translateLeft = "effect." + namespace + '.' + name;
+        this.builder.add(translateLeft, title);
+        this.builder.add(translateLeft, description);
+    }
+
+    public void addDisc(SoundEvent event, String title, String desc) {
+        this.builder.add(event.location().toLanguageKey("jukebox_song"), title);
+        this.builder.add(event.location().toLanguageKey("jukebox_song", "desc"), desc);
     }
 
     /**
      * Auto translates all items set to be auto translated. <br>
      * You can add items to the list by appending true while registering items. <br>
-     * <strong>Is automatically called if you extend {@link QTLanguageProvider}</strong> <br>
+     * <strong>Is automatically called if you extend {@link QueTLanguageProvider}</strong> <br>
      * Example: register("name", true);
      */
     public void addInStorage() {
         List<Item> items = QueTObjectStorage.autotranslateItems();
         if (items.isEmpty()) {
-            ModRegistrator.logInfo("No Items set to be auto translated in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            ModRegistrator.logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
             return;
         }
         for (Item item : items) {
-            add(item);
+            auto(item);
         }
     }
 
     public void translateAllTabs() {
         List<ResourceKey<CreativeModeTab>> tabs = QueTObjectStorage.getTabs();
         if (tabs.isEmpty()) {
-            ModRegistrator.logInfo("No tabs registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            ModRegistrator.logInfo("No tabs registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
             return;
         }
         for (ResourceKey<CreativeModeTab> tab : tabs) {
-            add(tab);
+            auto(tab);
         }
     }
 

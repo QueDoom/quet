@@ -5,8 +5,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 
-public abstract class QTModelProvider extends FabricModelProvider {
-    public QTModelProvider(FabricPackOutput output) {
+public abstract class QueTModelProvider extends FabricModelProvider {
+    public QueTModelProvider(FabricPackOutput output) {
         super(output);
     }
 

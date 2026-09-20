@@ -10,8 +10,8 @@ import net.quedoom.quet.misc.QueTObjectStorage;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class QTBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
-    public QTBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
+public abstract class QueTBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
+    public QueTBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
         super(output, registryLookupFuture);
     }
 
