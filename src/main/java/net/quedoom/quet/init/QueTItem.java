@@ -12,8 +12,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.quedoom.quet.QueT;
+import net.quedoom.quet.datagen.lang.AutoTranslate;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
 import java.util.Properties;
@@ -67,8 +69,25 @@ public class QueTItem extends ModRegistrator {
             blockItem.registerBlocks(Item.BY_BLOCK, item);
         }
         Item autoItem = Registry.register(BuiltInRegistries.ITEM, key, item);
-        if (autoTranslate) QueTObjectStorage.addAutotranslate(autoItem);
+        if (autoTranslate || AutoTranslate.SHOULD_AUTO_TRANSLATE_BY_DEFAULT) QueTObjectStorage.addAutotranslate(autoItem);
         return autoItem;
+    }
+
+    protected static Item registerBlock(String name, Block block, Item.Properties properties) {
+        return register(create(name), p -> new BlockItem(block, p), properties);
+    }
+    protected static Item registerBlock(String name, Block block, Item.Properties properties, boolean autoTranslate) {
+        return register(create(name), p -> new BlockItem(block, p), properties, autoTranslate);
+    }
+
+    protected static Item registerSeedOrBush(String name, Block block) {
+        return registerBlock(name, block, new Item.Properties().useBlockDescriptionPrefix());
+    }
+    protected static Item registerSeedOrBush(String name, Block block, boolean autoTranslate) {
+        return registerBlock(name, block, new Item.Properties().useBlockDescriptionPrefix(), autoTranslate);
+    }
+    protected static Item registerWaterCrop(String name, Block block) {
+        return register(create(name), p -> new PlaceOnWaterBlockItem(block, p), new Item.Properties().useBlockDescriptionPrefix());
     }
 
     protected static Item registerBucket(String name, FlowingFluid fluid, Item.Properties properties) {
@@ -115,40 +134,84 @@ public class QueTItem extends ModRegistrator {
     }
 
     protected static Item registerSword(String name, ToolMaterial material) {
-        return register(name, new Item.Properties().sword(material, 3.0F, -2.4F).stacksTo(1));
+        Item item = register(name, new Item.Properties().sword(material, 3.0F, -2.4F).stacksTo(1));
+        QueTObjectStorage.addSword(item);
+        return item;
     }
     protected static Item registerSpear(String name, ToolMaterial material, float attackDuration, float damageMultiplier, float delay, float dismountTime, float dismountThreshold, float knockbackTime, float damageTime) {
-        return register(name, new Item.Properties().spear(material, attackDuration, damageMultiplier, delay, dismountTime, dismountThreshold, knockbackTime, 5.1F, damageTime, 4.5F));
+        Item item = register(name, new Item.Properties().spear(material, attackDuration, damageMultiplier, delay, dismountTime, dismountThreshold, knockbackTime, 5.1F, damageTime, 4.5F));;
+        QueTObjectStorage.addSpear(item);
+        return item;
     }
     protected static Item registerPickaxe(String name, ToolMaterial material) {
-        return register(name, new Item.Properties().pickaxe(material, 1.0F, -2.8F).stacksTo(1));
+        Item item = register(name, new Item.Properties().pickaxe(material, 1.0F, -2.8F).stacksTo(1));;
+        QueTObjectStorage.addPickaxe(item);
+        return item;
     }
     protected static Item registerAxe(String name, ToolMaterial material) {
-        return register(create(name), p -> new AxeItem(material, 6.0F, -3.2F, p));
+        Item item = register(create(name), p -> new AxeItem(material, 6.0F, -3.2F, p));;
+        QueTObjectStorage.addAxe(item);
+        return item;
     }
     protected static Item registerShovel(String name, ToolMaterial material) {
-        return register(create(name), p -> new ShovelItem(material, 1.5F, -3.0F, p));
+        Item item = register(create(name), p -> new ShovelItem(material, 1.5F, -3.0F, p));;
+        QueTObjectStorage.addShovel(item);
+        return item;
     }
     protected static Item registerHoe(String name, ToolMaterial material) {
-        return register(create(name), p -> new HoeItem(material, 0.0F, -3.0F, p));
+        Item item = register(create(name), p -> new HoeItem(material, 0.0F, -3.0F, p));;
+        QueTObjectStorage.addHoe(item);
+        return item;
+    }
+    protected static Item registerBow(String name) {
+        Item item = register(create(name), BowItem::new);;
+        QueTObjectStorage.addBow(item);
+        return item;
+    }
+    protected static Item registerCrossbow(String name) {
+        Item item = register(create(name), CrossbowItem::new);;
+        QueTObjectStorage.addCrossbow(item);
+        return item;
     }
     protected static Item registerSword(String name, ToolMaterial material, boolean autoTranslate) {
-        return register(name, new Item.Properties().sword(material, 3.0F, -2.4F).stacksTo(1), autoTranslate);
+        Item item = register(name, new Item.Properties().sword(material, 3.0F, -2.4F).stacksTo(1), autoTranslate);;
+        QueTObjectStorage.addSword(item);
+        return item;
     }
     protected static Item registerSpear(String name, ToolMaterial material, float attackDuration, float damageMultiplier, float delay, float dismountTime, float dismountThreshold, float knockbackTime, float damageTime, boolean autoTranslate) {
-        return register(name, new Item.Properties().spear(material, attackDuration, damageMultiplier, delay, dismountTime, dismountThreshold, knockbackTime, 5.1F, damageTime, 4.5F), autoTranslate);
+        Item item = register(name, new Item.Properties().spear(material, attackDuration, damageMultiplier, delay, dismountTime, dismountThreshold, knockbackTime, 5.1F, damageTime, 4.5F), autoTranslate);;
+        QueTObjectStorage.addSpear(item);
+        return item;
     }
     protected static Item registerPickaxe(String name, ToolMaterial material, boolean autoTranslate) {
-        return register(name, new Item.Properties().pickaxe(material, 1.0F, -2.8F).stacksTo(1), autoTranslate);
+        Item item = register(name, new Item.Properties().pickaxe(material, 1.0F, -2.8F).stacksTo(1), autoTranslate);;
+        QueTObjectStorage.addPickaxe(item);
+        return item;
     }
     protected static Item registerAxe(String name, ToolMaterial material, boolean autoTranslate) {
-        return register(create(name), p -> new AxeItem(material, 6.0F, -3.2F, p), autoTranslate);
+        Item item = register(create(name), p -> new AxeItem(material, 6.0F, -3.2F, p), autoTranslate);;
+        QueTObjectStorage.addAxe(item);
+        return item;
     }
     protected static Item registerShovel(String name, ToolMaterial material, boolean autoTranslate) {
-        return register(create(name), p -> new ShovelItem(material, 1.5F, -3.0F, p), autoTranslate);
+        Item item = register(create(name), p -> new ShovelItem(material, 1.5F, -3.0F, p), autoTranslate);;
+        QueTObjectStorage.addShovel(item);
+        return item;
     }
     protected static Item registerHoe(String name, ToolMaterial material, boolean autoTranslate) {
-        return register(create(name), p -> new HoeItem(material, 0.0F, -3.0F, p), autoTranslate);
+        Item item = register(create(name), p -> new HoeItem(material, 0.0F, -3.0F, p), autoTranslate);;
+        QueTObjectStorage.addHoe(item);
+        return item;
+    }
+    protected static Item registerBow(String name, boolean autoTranslate) {
+        Item item = register(create(name), BowItem::new, autoTranslate);;
+        QueTObjectStorage.addBow(item);
+        return item;
+    }
+    protected static Item registerCrossbow(String name, boolean autoTranslate) {
+        Item item = register(create(name), CrossbowItem::new, autoTranslate);;
+        QueTObjectStorage.addCrossbow(item);
+        return item;
     }
 
     protected static Item registerArmor(String name, ArmorMaterial material, ArmorType type) {
@@ -174,6 +237,16 @@ public class QueTItem extends ModRegistrator {
         QueTObjectStorage.addBoots(boots);
         return boots;
     }
+    protected static Item registerHorseArmor(String name, ArmorMaterial material) {
+        Item horseArmor = register(create(name), Item::new, new Item.Properties().horseArmor(material));
+        QueTObjectStorage.addHorseArmor(horseArmor);
+        return horseArmor;
+    }
+    protected static Item registerWolfArmor(String name, ArmorMaterial material) {
+        Item wolfArmor = register(create(name), Item::new, new Item.Properties().wolfArmor(material));
+        QueTObjectStorage.addWolfArmor(wolfArmor);
+        return wolfArmor;
+    }
     protected static Item registerArmor(String name, ArmorMaterial material, ArmorType type, boolean autoTranslate) {
         return register(create(name), Item::new, new Item.Properties().humanoidArmor(material, type), autoTranslate);
     }
@@ -197,38 +270,56 @@ public class QueTItem extends ModRegistrator {
         QueTObjectStorage.addBoots(boots);
         return boots;
     }
+    protected static Item registerHorseArmor(String name, ArmorMaterial material, boolean autoTranslate) {
+        Item horseArmor = register(create(name), Item::new, new Item.Properties().horseArmor(material), autoTranslate);
+        QueTObjectStorage.addHorseArmor(horseArmor);
+        return horseArmor;
+    }
+    protected static Item registerWolfArmor(String name, ArmorMaterial material, boolean autoTranslate) {
+        Item wolfArmor = register(create(name), Item::new, new Item.Properties().wolfArmor(material), autoTranslate);
+        QueTObjectStorage.addWolfArmor(wolfArmor);
+        return wolfArmor;
+    }
 
     protected static Item registerShears(String name, int maxDamage) {
-        return register(create(name), ShearsItem::new, new Item.Properties().durability(maxDamage).component(DataComponents.TOOL, ShearsItem.createToolProperties()));
+        Item item = register(create(name), ShearsItem::new, new Item.Properties().durability(maxDamage).component(DataComponents.TOOL, ShearsItem.createToolProperties()));
+        QueTObjectStorage.addShear(item);
+        return item;
     }
     protected static Item registerShears(String name) {
         return registerShears(name, 238);
     }
     protected static Item registerShears(String name, int maxDamage, boolean autoTranslate) {
-        return register(create(name), ShearsItem::new, new Item.Properties().durability(maxDamage).component(DataComponents.TOOL, ShearsItem.createToolProperties()), autoTranslate);
+        Item item = register(create(name), ShearsItem::new, new Item.Properties().durability(maxDamage).component(DataComponents.TOOL, ShearsItem.createToolProperties()), autoTranslate);
+        QueTObjectStorage.addShear(item);
+        return item;
     }
     protected static Item registerShears(String name, boolean autoTranslate) {
         return registerShears(name, 238, autoTranslate);
     }
 
     protected static Item registerBrush(String name, int maxDamage) {
-        return register(create(name), BrushItem::new, new Item.Properties().durability(maxDamage));
+        Item item = register(create(name), BrushItem::new, new Item.Properties().durability(maxDamage));
+        QueTObjectStorage.addBrush(item);
+        return item;
     }
     protected static Item registerBrush(String name) {
         return registerBrush(name, 64);
     }
     protected static Item registerBrush(String name, int maxDamage, boolean autoTranslate) {
-        return register(create(name), BrushItem::new, new Item.Properties().durability(maxDamage), autoTranslate);
+        Item item = register(create(name), BrushItem::new, new Item.Properties().durability(maxDamage), autoTranslate);
+        QueTObjectStorage.addBrush(item);
+        return item;
     }
     protected static Item registerBrush(String name, boolean autoTranslate) {
         return registerBrush(name, 64, autoTranslate);
     }
 
 
-        protected static ResourceKey<Item> create(String name) {
-        if (ModRegistrator.namespace() == null) {
-            throw new NullPointerException("Unset namespace in " + QueTItem.class);
-        }
-        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+    protected static ResourceKey<Item> create(String name) {
+    if (ModRegistrator.namespace() == null) {
+        throw new NullPointerException("Unset namespace in " + QueTItem.class);
+    }
+    return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
     }
 }
