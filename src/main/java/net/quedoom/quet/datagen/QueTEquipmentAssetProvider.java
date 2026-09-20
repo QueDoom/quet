@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public abstract class QueTEquipmentAssetProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
@@ -26,20 +27,28 @@ public abstract class QueTEquipmentAssetProvider implements DataProvider {
 
     }
 
-    protected static void createHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key) {
+    protected static void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key) {
         consumer.accept(key, EquipmentClientInfo
                 .builder().addHumanoidLayers(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()))
                 .build());
     }
-    protected static void createHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key, boolean dyeable) {
+    protected static void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key, boolean dyeable) {
         consumer.accept(key, EquipmentClientInfo
                 .builder().addHumanoidLayers(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()), dyeable)
                 .build());
     }
-    protected static void createMainHumanoidLayer(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key, boolean dyeable) {
-        consumer.accept(key, EquipmentClientInfo
-                .builder().addMainHumanoidLayer(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()), dyeable)
-                .build());
+    protected static EquipmentClientInfo.Builder createMainHumanoidLayer(ResourceKey<EquipmentAsset> key, boolean dyeable) {
+        return EquipmentClientInfo.builder().addMainHumanoidLayer(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()), dyeable);
+    }
+    protected static EquipmentClientInfo.Builder addLayer(EquipmentClientInfo.Builder builder, EquipmentClientInfo.LayerType type, String name) {
+        return builder.addLayers(type,
+                new EquipmentClientInfo.Layer(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name)));
+    }
+    protected static void registerHorseArmor(EquipmentClientInfo.Builder builder, String name) {
+        addLayer(builder, EquipmentClientInfo.LayerType.HORSE_BODY, name);
+    }
+    protected static void registerWolfArmor(EquipmentClientInfo.Builder builder, String name) {
+        addLayer(builder, EquipmentClientInfo.LayerType.WOLF_BODY, name);
     }
 
     protected static PackOutput.PathProvider createPathProvider(PackOutput packOutput) {

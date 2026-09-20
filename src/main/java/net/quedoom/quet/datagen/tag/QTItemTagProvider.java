@@ -48,6 +48,7 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         } else {
             for (Item helmet : helmets) {
                 valueLookupBuilder(ItemTags.HEAD_ARMOR).add(helmet);
+                valueLookupBuilder(ConventionalItemTags.ARMORS).add(helmet);
             }
         }
         if (chestplates.isEmpty()) {
@@ -55,6 +56,7 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         } else {
             for (Item chestplate : chestplates) {
                 valueLookupBuilder(ItemTags.CHEST_ARMOR).add(chestplate);
+                valueLookupBuilder(ConventionalItemTags.ARMORS).add(chestplate);
             }
         }
         if (leggings.isEmpty()) {
@@ -62,6 +64,7 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         } else {
             for (Item legging : leggings) {
                 valueLookupBuilder(ItemTags.LEG_ARMOR).add(legging);
+                valueLookupBuilder(ConventionalItemTags.ARMORS).add(legging);
             }
         }
         if (boots.isEmpty()) {
@@ -69,6 +72,7 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         } else {
             for (Item boot : boots) {
                 valueLookupBuilder(ItemTags.FOOT_ARMOR).add(boot);
+                valueLookupBuilder(ConventionalItemTags.ARMORS).add(boot);
             }
         }
     }
@@ -80,6 +84,10 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         List<Item> shovels = QueTObjectStorage.shovels();
         List<Item> hoes = QueTObjectStorage.hoes();
         List<Item> spears = QueTObjectStorage.spears();
+        List<Item> shears = QueTObjectStorage.shears();
+        List<Item> brushes = QueTObjectStorage.brushes();
+        List<Item> bows = QueTObjectStorage.bows();
+        List<Item> crossbows = QueTObjectStorage.crossbows();
 
         if (swords.isEmpty()) {
             ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
@@ -121,6 +129,41 @@ public abstract class QTItemTagProvider extends FabricTagsProvider.ItemTagsProvi
         } else {
             for (Item spear : spears) {
                 valueLookupBuilder(ItemTags.SPEARS).add(spear);
+            }
+        }
+        if (spears.isEmpty()) {
+            ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+        } else {
+            for (Item spear : spears) {
+                valueLookupBuilder(ItemTags.SPEARS).add(spear);
+            }
+        }
+        if (shears.isEmpty()) {
+            ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+        } else {
+            for (Item shear : shears) {
+                valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(shear);
+            }
+        }
+        if (brushes.isEmpty()) {
+            ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+        } else {
+            for (Item brush : brushes) {
+                valueLookupBuilder(ConventionalItemTags.BRUSH_TOOLS).add(brush);
+            }
+        }
+        if (bows.isEmpty()) {
+            ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+        } else {
+            for (Item bow : bows) {
+                valueLookupBuilder(ConventionalItemTags.BOW_TOOLS).add(bow);
+            }
+        }
+        if (crossbows.isEmpty()) {
+            ModRegistrator.logInfo("No Swords registered in " + AutoTranslate.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+        } else {
+            for (Item crossbow : crossbows) {
+                valueLookupBuilder(ConventionalItemTags.CROSSBOW_TOOLS).add(crossbow);
             }
         }
     }
