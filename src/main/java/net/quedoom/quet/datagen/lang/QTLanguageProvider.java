@@ -8,13 +8,15 @@ import net.quedoom.quet.init.ModRegistrator;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class QTLanguageProvider extends FabricLanguageProvider {
-    protected QTLanguageProvider(FabricPackOutput packOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        super(packOutput, languageCode, registryLookup);
+    public QTLanguageProvider(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        super(packOutput, registryLookup);
     }
 
     @Override
     public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder translationBuilder) {
-        generateTranslations(registryLookup, translationBuilder, AutoTranslate.of(translationBuilder));
+        AutoTranslate autoTranslate = AutoTranslate.of(translationBuilder);
+        autoTranslate.addInStorage();
+        generateTranslations(registryLookup, translationBuilder, autoTranslate);
     }
 
     public abstract void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder translationBuilder, AutoTranslate autoTranslate);

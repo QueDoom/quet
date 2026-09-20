@@ -1,8 +1,11 @@
 package net.quedoom.quet.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +16,8 @@ import net.quedoom.quet.misc.QueTObjectStorage;
 import java.util.List;
 
 public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
+    public static boolean SHOULD_AUTO_TRANSLATE_BY_DEFAULT = false;
+
 
     public static AutoTranslate of(FabricLanguageProvider.TranslationBuilder builder) {
         return new AutoTranslate(builder, ModRegistrator.namespace());
@@ -39,13 +44,12 @@ public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, S
     public void add(ResourceKey<CreativeModeTab> tab) {
         String translateLeft = namespace + ".creativeModeTab." + tab.identifier().getNamespace();
         this.builder.add(translateLeft, snakeToTitleCase(tab.identifier().getNamespace()));
-
     }
 
     /**
      * Auto translates all items set to be auto translated. <br>
      * You can add items to the list by appending true while registering items. <br>
-     * <p><strong>Should always be called at the top of the LanguageProvider</strong></p>
+     * <strong>Is automatically called if you extend {@link QTLanguageProvider}</strong> <br>
      * Example: register("name", true);
      */
     public void addInStorage() {
@@ -72,6 +76,21 @@ public record AutoTranslate(FabricLanguageProvider.TranslationBuilder builder, S
 
     public void addTooltip(Item item, String translation) {
         this.builder.add("tooltip." + ModRegistrator.namespace() + getPath(item), translation);
+    }
+
+    public void addPaintingTitle(ResourceKey<PaintingVariant> key, String translation) {
+        this.builder.add(key.identifier().toLanguageKey("painting", "title"), translation);
+    }
+    public void addPaintingAuthor(ResourceKey<PaintingVariant> key, String translation) {
+        this.builder.add(key.identifier().toLanguageKey("painting", "author"), translation);
+    }
+    public void addPainting(ResourceKey<PaintingVariant> key, String title, String author) {
+        addPaintingTitle(key, title);
+        addPaintingAuthor(key, author);
+    }
+
+    public void addStat(String name, String translation) {
+        this.builder.add(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name).toLanguageKey("stat"), translation);
     }
 
     /**
