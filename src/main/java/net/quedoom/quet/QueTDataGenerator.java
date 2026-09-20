@@ -1,19 +1,16 @@
 package net.quedoom.quet;
 
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.quedoom.quet.datagen.QueTLanguageGenerator;
-import net.quedoom.quet.datagen.TagProvider;
-import net.quedoom.quet.misc.QueTObjectStorage;
+import net.quedoom.quet.datagen.*;
+import net.quedoom.quet.datagen.test.TagProvider;
 
-public class QueTDataGenerator implements DataGeneratorEntrypoint {
+public class QueTDataGenerator extends QueTDataGeneratorEntrypoint {
 	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+	protected void doDatagen(FabricDataGenerator fabricDataGenerator, FabricDataGenerator.Pack pack) {
+	}
 
-		pack.addProvider(QueTLanguageGenerator::new);
-		pack.addProvider(TagProvider::new);
+	@Override
+	protected void buildRegistry(QTRegistryBuilder qtRegistryBuilder) {
 
-		QueTObjectStorage.clear();
 	}
 }

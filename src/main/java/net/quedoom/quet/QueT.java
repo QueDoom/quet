@@ -3,9 +3,6 @@ package net.quedoom.quet;
 import net.fabricmc.api.ModInitializer;
 
 import net.quedoom.quet.init.*;
-import net.quedoom.quet.item.CreateiveTab;
-import net.quedoom.quet.item.ModItems;
-import net.quedoom.quet.misc.QueTObjectStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +12,6 @@ public class QueT extends ModRegistrator implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModItems.register();
-		CreateiveTab.register();
 	}
 
 }
