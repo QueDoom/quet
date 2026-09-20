@@ -3,7 +3,7 @@ package net.quedoom.quet.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
-import net.quedoom.quet.datagen.lang.AutoTranslate;
+import net.quedoom.quet.datagen.lang.QTTranslationBuilder;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
 import net.quedoom.quet.misc.GetPath;
@@ -37,7 +37,7 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
 
     /**
      * Adds a tooltip to the item: <br>
-     * It requires you to translate the following key ({@link AutoTranslate} has a method for this)
+     * It requires you to translate the following key ({@link QTTranslationBuilder} has a method for this)
      *
      * @param item Determines what the key will look like (example: "tooltip.namespace.item")
      */
