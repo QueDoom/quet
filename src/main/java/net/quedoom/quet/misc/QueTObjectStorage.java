@@ -5,7 +5,7 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.quedoom.quet.datagen.tag.QTItemTagProvider;
+import net.quedoom.quet.datagen.tag.QueTItemTagProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,22 @@ public class QueTObjectStorage {
         REGISTERED_BOWS = new ArrayList<>();
         REGISTERED_CROSSBOWS = new ArrayList<>();
         REGISTERED_CROPS = new ArrayList<>();
+        REGISTERED_MUSIC_DISCS = new ArrayList<>();
     }
+
+    //region Misc Items
+
+    private static List<Item> REGISTERED_MUSIC_DISCS = new ArrayList<>();
+
+    public static List<Item> discs() {
+        return REGISTERED_MUSIC_DISCS;
+    }
+
+    public static void addDisc(Item discItem) {
+        REGISTERED_MUSIC_DISCS.add(discItem);
+    }
+
+    //endregion Misc Items
 
     //region Autotranslate
     private static List<Item> AUTOTRANSLATE_ITEMS = new ArrayList<>();
@@ -67,7 +82,7 @@ public class QueTObjectStorage {
     //region Buckets
     /**
      * All {@link BucketItem}s registered with QueTItem#registerBucket() gets added to the list and will be added to the tag Buckets
-     * if you extend {@link QTItemTagProvider} instead of {@link net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider.ItemTagsProvider}
+     * if you extend {@link QueTItemTagProvider} instead of {@link net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider.ItemTagsProvider}
      */
     private static List<Item> REGISTERED_BUCKETS = new ArrayList<>();
     public static void addBucket(Item item) {

@@ -14,11 +14,9 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.quedoom.quet.QueT;
-import net.quedoom.quet.datagen.lang.AutoTranslate;
+import net.quedoom.quet.datagen.lang.QTTranslationBuilder;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
-import java.util.Properties;
 import java.util.function.Function;
 
 public class QueTItem extends ModRegistrator {
@@ -43,8 +41,9 @@ public class QueTItem extends ModRegistrator {
         if (item instanceof BlockItem blockItem) {
             blockItem.registerBlocks(Item.BY_BLOCK, item);
         }
-
-        return Registry.register(BuiltInRegistries.ITEM, key, item);
+        Item autoItem = Registry.register(BuiltInRegistries.ITEM, key, item);
+        if (QTTranslationBuilder.SHOULD_AUTO_TRANSLATE_BY_DEFAULT) QueTObjectStorage.addAutotranslate(autoItem);
+        return autoItem;
     }
 
     protected static Item register(String name, boolean autoTranslate) {
@@ -69,7 +68,7 @@ public class QueTItem extends ModRegistrator {
             blockItem.registerBlocks(Item.BY_BLOCK, item);
         }
         Item autoItem = Registry.register(BuiltInRegistries.ITEM, key, item);
-        if (autoTranslate || AutoTranslate.SHOULD_AUTO_TRANSLATE_BY_DEFAULT) QueTObjectStorage.addAutotranslate(autoItem);
+        if (autoTranslate) QueTObjectStorage.addAutotranslate(autoItem);
         return autoItem;
     }
 
@@ -315,6 +314,13 @@ public class QueTItem extends ModRegistrator {
         return registerBrush(name, 64, autoTranslate);
     }
 
+    protected static Item registerMusicDisc(String name, ResourceKey<JukeboxSong> song) {
+        return register(create(name), Item::new, new Item.Properties().jukeboxPlayable(song).stacksTo(1).rarity(Rarity.RARE));
+    }
+
+    protected static Item registerMusicDisc(String name, ResourceKey<JukeboxSong> song, boolean autoTranslate) {
+        return register(create(name), Item::new, new Item.Properties().jukeboxPlayable(song).stacksTo(1).rarity(Rarity.RARE), autoTranslate);
+    }
 
     protected static ResourceKey<Item> create(String name) {
     if (ModRegistrator.namespace() == null) {

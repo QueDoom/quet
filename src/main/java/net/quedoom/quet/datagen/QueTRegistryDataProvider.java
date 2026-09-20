@@ -15,6 +15,7 @@ public abstract class QueTRegistryDataProvider extends FabricDynamicRegistryProv
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         entries.addAll(registries.lookupOrThrow(Registries.PAINTING_VARIANT));
+        entries.addAll(registries.lookupOrThrow(Registries.JUKEBOX_SONG));
         configureQT(registries, entries);
     }
 
