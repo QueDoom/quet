@@ -1,7 +1,6 @@
-package net.quedoom.quet.datagen;
+package net.quedoom.quet.datagen.recipe;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -13,15 +12,19 @@ import net.quedoom.quet.misc.LocalizedGetPath;
 
 import java.util.concurrent.CompletableFuture;
 
-public abstract class QueTRecipeGen extends FabricRecipeProvider implements LocalizedGetPath {
-    public QueTRecipeGen(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, registriesFuture);
+public abstract class QTRecipeProvider extends RecipeProvider implements LocalizedGetPath {
+    protected QTRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
+        super(registries, output);
     }
 
-    private void campfireSmelting(ItemLike in, ItemLike out, RecipeCategory category, int cookingTime, RecipeProvider provider, RecipeOutput output) {
+    protected void campfireSmelting(ItemLike out, ItemLike in, RecipeCategory category, int cookingTime) {
         SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(in), category, out, 0, cookingTime)
-                .unlockedBy(RecipeProvider.getHasName(in), provider.has(in))
+                .unlockedBy(RecipeProvider.getHasName(in), this.has(in))
                 .group(getPath(out.asItem()))
                 .save(output, out + "_from_campfire");
+    }
+
+    protected void campfireSmelting(ItemLike out, ItemLike in, RecipeCategory category) {
+        campfireSmelting(out, in, category, 200);
     }
 }

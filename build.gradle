@@ -11,6 +11,9 @@ repositories {
 	// for more information about repositories.
 }
 
+publishing {
+}
+
 loom {
 	accessWidenerPath = file("src/main/resources/quet.classtweaker")
 }
