@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.quedoom.quet.datagen.tag.QueTItemTagProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class QueTObjectStorage {
@@ -28,6 +29,7 @@ public class QueTObjectStorage {
         REGISTERED_HORSE_ARMOR = new ArrayList<>();
         REGISTERED_WOLF_ARMOR = new ArrayList<>();
         AUTOTRANSLATE_ITEMS = new ArrayList<>();
+        AUTOTRANSLATE_BLOCKS = new ArrayList<>();
         REGISTERED_SWORDS = new ArrayList<>();
         REGISTERED_AXES = new ArrayList<>();
         REGISTERED_PICKAXES = new ArrayList<>();
@@ -58,11 +60,24 @@ public class QueTObjectStorage {
 
     //region Autotranslate
     private static List<Item> AUTOTRANSLATE_ITEMS = new ArrayList<>();
+    private static List<Block> AUTOTRANSLATE_BLOCKS = new ArrayList<>();
     public static void addAutotranslate(Item item) {
         AUTOTRANSLATE_ITEMS.add(item);
     }
+    public static void addAutotranslate(Item... items) {
+        AUTOTRANSLATE_ITEMS.addAll(Arrays.asList(items));
+    }
+    public static void addAutotranslate(Block block) {
+        AUTOTRANSLATE_BLOCKS.add(block);
+    }
+    public static void addAutotranslate(Block... blocks) {
+        AUTOTRANSLATE_BLOCKS.addAll(Arrays.asList(blocks));
+    }
     public static List<Item> autotranslateItems() {
         return AUTOTRANSLATE_ITEMS;
+    }
+    public static List<Block> autotranslateBlocks() {
+        return AUTOTRANSLATE_BLOCKS;
     }
     //endregion Autotranslate
 

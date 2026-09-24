@@ -41,17 +41,35 @@ public class QueTBlock extends ModRegistrator{
     protected static Block registerButton(String name, BlockSetType type, int ticksToStayPressed, boolean shouldRegisterItem) {
         return register(name, p -> new ButtonBlock(type, ticksToStayPressed, p), Blocks.buttonProperties(), shouldRegisterItem);
     }
+    protected static Block registerButton(String name, BlockSetType type, int ticksToStayPressed, MapColor color) {
+        return register(name, p -> new ButtonBlock(type, ticksToStayPressed, p), Blocks.buttonProperties().mapColor(color));
+    }
+    protected static Block registerButton(String name, BlockSetType type, int ticksToStayPressed, MapColor color, boolean shouldRegisterItem) {
+        return register(name, p -> new ButtonBlock(type, ticksToStayPressed, p), Blocks.buttonProperties().mapColor(color), shouldRegisterItem);
+    }
     protected static Block registerStoneButton(String name, BlockSetType type) {
         return register(name, p -> new ButtonBlock(type, 20, p), Blocks.buttonProperties());
     }
     protected static Block registerStoneButton(String name, BlockSetType type, boolean shouldRegisterItem) {
         return register(name, p -> new ButtonBlock(type, 20, p), Blocks.buttonProperties(), shouldRegisterItem);
     }
+    protected static Block registerStoneButton(String name, BlockSetType type, MapColor color) {
+        return register(name, p -> new ButtonBlock(type, 20, p), Blocks.buttonProperties().mapColor(color));
+    }
+    protected static Block registerStoneButton(String name, BlockSetType type, MapColor color, boolean shouldRegisterItem) {
+        return register(name, p -> new ButtonBlock(type, 20, p), Blocks.buttonProperties().mapColor(color), shouldRegisterItem);
+    }
     protected static Block registerWoodenButton(String name, BlockSetType type) {
         return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties());
     }
     protected static Block registerWoodenButton(String name, BlockSetType type, boolean shouldRegisterItem) {
         return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties(), shouldRegisterItem);
+    }
+    protected static Block registerWoodenButton(String name, BlockSetType type, MapColor color) {
+        return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties().mapColor(color));
+    }
+    protected static Block registerWoodenButton(String name, BlockSetType type, MapColor color, boolean shouldRegisterItem) {
+        return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties().mapColor(color), shouldRegisterItem);
     }
     protected static Block registerLever(String name) {
         return register(name, LeverBlock::new, Blocks.buttonProperties());
@@ -128,6 +146,10 @@ public class QueTBlock extends ModRegistrator{
         Block cropBlock = register(name, block, BlockBehaviour.Properties.ofFullCopy(Blocks.SWEET_BERRY_BUSH), false);
 //        QueTObjectStorage.addCrop(cropBlock);
         return cropBlock;
+    }
+
+    protected static Block registerShelf(String name, Block baseBlock) {
+        return register(name, ShelfBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
     }
 
     protected static Item registerItem(String name, Block block, Item.Properties properties) {

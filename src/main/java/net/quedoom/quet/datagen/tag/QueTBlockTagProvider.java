@@ -18,6 +18,17 @@ public abstract class QueTBlockTagProvider extends FabricTagsProvider.BlockTagsP
         super(output, registryLookupFuture);
     }
 
+    protected void add(CompleteWoodSet woodSet) {
+        valueLookupBuilder(woodSet.BLOCK_LOG_TAG)
+                .add(
+                        woodSet.LOG,
+                        woodSet.STRIPPED,
+                        woodSet.WOOD,
+                        woodSet.STRIPPED_WOOD
+                );
+        if (woodSet.isOverwoldAndNatural) valueLookupBuilder(BlockTags.OVERWORLD_NATURAL_LOGS).add(woodSet.LOG);
+    }
+
     protected void addCrops() {
         List<Block> crops = QueTObjectStorage.crops();
 

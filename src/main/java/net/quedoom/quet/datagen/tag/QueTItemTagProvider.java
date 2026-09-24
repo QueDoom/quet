@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.quedoom.quet.block.CompleteWoodSet;
 import net.quedoom.quet.datagen.lang.QTTranslationBuilder;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.QueTObjectStorage;
@@ -16,6 +17,58 @@ import java.util.concurrent.CompletableFuture;
 public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
     public QueTItemTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookupFuture) {
         super(output, registryLookupFuture);
+    }
+
+    @SuppressWarnings("All")
+    protected void add(CompleteWoodSet woodSet) {
+        valueLookupBuilder(woodSet.ITEM_LOG_TAG)
+                .add(
+                        woodSet.LOG.asItem(),
+                        woodSet.STRIPPED.asItem(),
+                        woodSet.WOOD.asItem(),
+                        woodSet.STRIPPED_WOOD.asItem()
+                );
+
+        valueLookupBuilder(ItemTags.LOGS_THAT_BURN).addOptionalTag(woodSet.ITEM_LOG_TAG);
+        if (woodSet.isFireProof) {
+            valueLookupBuilder(ItemTags.NON_FLAMMABLE_WOOD)
+                    .addOptionalTag(woodSet.ITEM_LOG_TAG)
+                    .add(
+                            woodSet.SLAB.asItem(),
+                            woodSet.STAIRS.asItem(),
+                            woodSet.SHELF.asItem()
+                    );
+            if (woodSet.hasSigns()) {
+                valueLookupBuilder(ItemTags.NON_FLAMMABLE_WOOD)
+                        .add(
+                                woodSet.SIGN.asItem(),
+                                woodSet.HANGING_SIGN.asItem(),
+                                woodSet.SIGN_ITEM,
+                                woodSet.HANGING_SIGN_ITEM
+                        );
+            }
+            if (woodSet.hasFences()) {
+                valueLookupBuilder(ItemTags.NON_FLAMMABLE_WOOD)
+                        .add(
+                                woodSet.FENCE.asItem(),
+                                woodSet.GATE.asItem()
+                        );
+            }
+            if (woodSet.hasDoors()) {
+                valueLookupBuilder(ItemTags.NON_FLAMMABLE_WOOD)
+                        .add(
+                                woodSet.DOOR.asItem(),
+                                woodSet.TRAPDOOR.asItem()
+                        );
+            }
+            if (woodSet.hasButtons()) {
+                valueLookupBuilder(ItemTags.NON_FLAMMABLE_WOOD)
+                        .add(
+                                woodSet.PRESSURE_PLATE.asItem(),
+                                woodSet.BUTTON.asItem()
+                        );
+            }
+        }
     }
 
     protected void addMisc() {

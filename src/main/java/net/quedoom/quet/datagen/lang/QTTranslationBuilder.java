@@ -4,9 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -65,14 +63,22 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
      * <strong>Is automatically called if you extend {@link QueTLanguageProvider}</strong> <br>
      * Example: register("name", true);
      */
-    public void addInStorage() {
+    public void autotranslateInStorage() {
         List<Item> items = QueTObjectStorage.autotranslateItems();
+        List<Block> blocks = QueTObjectStorage.autotranslateBlocks();
         if (items.isEmpty()) {
             ModRegistrator.logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
             return;
         }
         for (Item item : items) {
             auto(item);
+        }
+        if (blocks.isEmpty()) {
+            ModRegistrator.logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            return;
+        }
+        for (Block block : blocks ) {
+            auto(block);
         }
     }
 

@@ -14,7 +14,7 @@ public abstract class QueTLanguageProvider extends FabricLanguageProvider {
     @Override
     public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder translationBuilder) {
         QTTranslationBuilder autoTranslate = QTTranslationBuilder.of(translationBuilder);
-        autoTranslate.addInStorage();
+        autoTranslate.autotranslateInStorage();
         generateTranslations(registryLookup, translationBuilder, autoTranslate);
     }
 
