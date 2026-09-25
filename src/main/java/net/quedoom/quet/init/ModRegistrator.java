@@ -1,5 +1,7 @@
 package net.quedoom.quet.init;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,14 @@ public class ModRegistrator {
         ModRegistrator.NAMESPACE = namespace;
         return namespace;
     };
+
+    public static Component translatable(String prefix, String suffix) {
+        return Component.translatable(prefix + '.' + namespace() + '.' + suffix);
+    }
+
+    public static Identifier of(String path) {
+        return Identifier.fromNamespaceAndPath(namespace(), path);
+    }
 
     /**
      * Adds a register method to all classes that extends this Class (should be all Registration Classes)

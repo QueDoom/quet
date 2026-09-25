@@ -20,7 +20,7 @@ public class QueTArmorMaterial extends ModRegistrator {
             ResourceKey.createRegistryKey(Identifier.withDefaultNamespace("equipment_asset"));
 
     protected static ResourceKey<EquipmentAsset> create(String name) {
-        return ResourceKey.create(REGISTRY_KEY, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        return ResourceKey.create(REGISTRY_KEY, ModRegistrator.of(name));
     }
 
     /**

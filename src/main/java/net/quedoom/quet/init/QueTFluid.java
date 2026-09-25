@@ -10,6 +10,6 @@ public class QueTFluid extends ModRegistrator {
         if (ModRegistrator.namespace() == null) {
             throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
         }
-        return Registry.register(BuiltInRegistries.FLUID, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name), fluid);
+        return Registry.register(BuiltInRegistries.FLUID, ModRegistrator.of(name), fluid);
     }
 }

@@ -8,6 +8,6 @@ import net.minecraft.world.effect.MobEffect;
 
 public class QueTEffects extends ModRegistrator {
     protected static Holder<MobEffect> register(String name, MobEffect effect) {
-        return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, Identifier.fromNamespaceAndPath(namespace(), name), effect);
+        return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, ModRegistrator.of(name), effect);
     }
 }

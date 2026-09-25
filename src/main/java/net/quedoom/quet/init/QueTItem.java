@@ -326,6 +326,6 @@ public class QueTItem extends ModRegistrator {
     if (ModRegistrator.namespace() == null) {
         throw new NullPointerException("Unset namespace in " + QueTItem.class);
     }
-    return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+    return ResourceKey.create(Registries.ITEM, ModRegistrator.of(name));
     }
 }

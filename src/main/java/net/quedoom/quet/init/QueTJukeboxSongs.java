@@ -8,15 +8,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Util;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.JukeboxSong;
 
 public class QueTJukeboxSongs extends ModRegistrator {
 
-    public static void bootstrap(BootstrapContext<JukeboxSong> context) {
-    }
-
     protected static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, Identifier.fromNamespaceAndPath(namespace(), name));
+        return ResourceKey.create(Registries.JUKEBOX_SONG, ModRegistrator.of(name));
     }
 
     protected static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key,

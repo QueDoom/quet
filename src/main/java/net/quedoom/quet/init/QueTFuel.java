@@ -16,8 +16,4 @@ public class QueTFuel extends ModRegistrator {
             builder.add(item, timeInTicks);
         });
     }
-
-    protected static void register(CompleteWoodSet woodSet) {
-
-    }
 }

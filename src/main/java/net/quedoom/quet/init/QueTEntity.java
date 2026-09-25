@@ -13,7 +13,7 @@ public class QueTEntity extends ModRegistrator {
         if (ModRegistrator.namespace() == null) {
             throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
         }
-        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, ModRegistrator.of(name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
     }
 

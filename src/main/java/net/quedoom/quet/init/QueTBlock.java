@@ -210,14 +210,14 @@ public class QueTBlock extends ModRegistrator{
         if (ModRegistrator.namespace() == null) {
             throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
         }
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        return ResourceKey.create(Registries.BLOCK, ModRegistrator.of(name));
     }
 
     protected static ResourceKey<Item> keyOfItem(String name) {
         if (ModRegistrator.namespace() == null) {
             throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
         }
-        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        return ResourceKey.create(Registries.ITEM, ModRegistrator.of(name));
     }
 
     public static void registerBlocks() {

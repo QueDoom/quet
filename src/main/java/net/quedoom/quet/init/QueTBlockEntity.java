@@ -14,7 +14,7 @@ public class QueTBlockEntity extends ModRegistrator {
             FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory,
             Block... blocks
     ) {
-        Identifier id = Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name);
+        Identifier id = ModRegistrator.of(name);
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
     }
 
