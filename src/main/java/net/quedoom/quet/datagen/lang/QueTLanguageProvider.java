@@ -3,6 +3,7 @@ package net.quedoom.quet.datagen.lang;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.alchemy.Potions;
 
 import java.util.concurrent.CompletableFuture;
 

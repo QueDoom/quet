@@ -1,13 +1,16 @@
 package net.quedoom.quet.datagen.lang;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
@@ -46,6 +49,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
         this.builder.add(translateLeft, snakeToTitleCase(tab.identifier().getNamespace()));
     }
 
+
     public void addEffect(String name, String title, String description) {
         String translateLeft = "effect." + namespace + '.' + name;
         this.builder.add(translateLeft, title);
@@ -55,6 +59,22 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     public void addDisc(SoundEvent event, String title, String desc) {
         this.builder.add(event.location().toLanguageKey("jukebox_song"), title);
         this.builder.add(event.location().toLanguageKey("jukebox_song", "desc"), desc);
+    }
+
+    public void auto(Holder.Reference<Potion> potion) {
+        add(potion, snakeToTitleCase(potion.key().identifier().getPath()));
+    }
+
+    public void add(Holder.Reference<Potion> potion, String translation) {
+        builder.add(potion.key().identifier(), translation);
+    }
+
+    public void auto(DamageSource source) {
+        add(source, snakeToTitleCase(source.type().deathMessageType().getSerializedName()));
+    }
+
+    public void add(DamageSource source, String translation) {
+        builder.add(source.type().deathMessageType().getSerializedName(), translation);
     }
 
     /**

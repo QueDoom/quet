@@ -12,7 +12,7 @@ public class QueTStats extends ModRegistrator {
 
 
     protected static Stat<?> makeCustomStat(String name, StatFormatter formatter) {
-        Identifier id = Identifier.fromNamespaceAndPath(namespace(), name);
+        Identifier id = ModRegistrator.of(name);
         Identifier newStat = Registry.register(BuiltInRegistries.CUSTOM_STAT, name, id);
 
         return Stats.CUSTOM.get(newStat, formatter);

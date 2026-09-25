@@ -22,7 +22,7 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.ITEM, ModRegistrator.of(name));
         }
 
         protected static TagKey<Item> materialRepairable(String material) {
@@ -35,7 +35,7 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.BLOCK, ModRegistrator.of(name));
         }
 
         protected static TagKey<Block> toolMineable(String tool) {
@@ -54,7 +54,7 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.BLOCK_ENTITY_TYPE, ModRegistrator.of(name));
         }
     }
     public static class QTEntityTags {
@@ -62,7 +62,7 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.ENTITY_TYPE, ModRegistrator.of(name));
         }
     }
     public static class QTFluidTags {
@@ -70,7 +70,7 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.FLUID, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.FLUID, ModRegistrator.of(name));
         }
     }
     public static class TQPotionTags {
@@ -78,15 +78,16 @@ public class QueTTag extends ModRegistrator {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.POTION, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.POTION, ModRegistrator.of(name));
         }
     }
     public static class QTVillagerTradeTags {
-        protected static TagKey<VillagerTrade> create(String name) {
+        protected static TagKey<VillagerTrade> createWithLevel(String name, int level) {
             if (ModRegistrator.namespace() == null) {
                 throw new NullPointerException("Unset namespace in " + QueTTag.class);
             }
-            return TagKey.create(Registries.VILLAGER_TRADE, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+            return TagKey.create(Registries.VILLAGER_TRADE,
+                    Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name + "/level_" + level));
         }
     }
 

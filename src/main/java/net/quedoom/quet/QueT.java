@@ -2,6 +2,8 @@ package net.quedoom.quet;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.quedoom.quet.init.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
