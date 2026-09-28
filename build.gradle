@@ -1,7 +1,32 @@
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
+	id "com.modrinth.minotaur" version "2.+"
 }
+
+def dotenv = [:]
+def envFile = file('.env')
+if (envFile.exists()) {
+	envFile.eachLine { line ->
+		def m = line =~ /^\s*([^#=\s]+)\s*=\s*(.*?)\s*$/
+		if (m) dotenv[m[0][1]] = m[0][2]
+	}
+}
+
+modrinth {
+	token = dotenv['MODRINTH_TOKEN'] ?: System.getenv("MODRINTH_TOKEN") // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+	projectId = project.namespace // This can be the project ID or the slug. Either will work!
+	versionNumber = project.version // You don't need to set this manually. Will fail if Modrinth has this version already
+	versionType = "release" // This is the default -- can also be `beta` or `alpha`
+	uploadFile = tasks.jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+	gameVersions = [project.minecraft_version] // Must be an array, even with only one version
+	loaders = ["fabric"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+	dependencies { // A special DSL for creating dependencies
+		required.project "fabric-api"
+	}
+}
+
+
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -65,19 +90,3 @@ jar {
 	}
 }
 
-// configure the maven publication
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
-}

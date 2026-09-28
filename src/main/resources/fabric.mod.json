@@ -17,14 +17,8 @@
 	"entrypoints": {
 		"main": [
 			"net.quedoom.quet.QueT"
-		],
-		"fabric-datagen": [
-			"net.quedoom.quet.QueTDataGenerator"
 		]
 	},
-	"mixins": [
-		"quet.mixins.json"
-	],
 	"depends": {
 		"fabricloader": ">=0.19.5",
 		"minecraft": "~26.1.2",
