@@ -47,6 +47,10 @@ public class ModRegistrator {
         return Identifier.fromNamespaceAndPath(namespace(), path);
     }
 
+    public static String translationString(String prefix, String suffix) {
+        return prefix + '.' + namespace() + '.' + suffix;
+    }
+
     /**
      * Adds a register method to all classes that extends this Class (should be all Registration Classes)
      */
