@@ -1,5 +1,7 @@
 # gradle
 
+.env
+
 .gradle/
 build/
 out/
