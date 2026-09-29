@@ -10,7 +10,7 @@ import net.quedoom.quet.init.ModRegistrator;
 import java.util.function.Consumer;
 
 public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) {
-    private AdvancementHolder newRewardsHolder(Item item, String name,
+    public AdvancementHolder newRewardsHolder(Item item, String name,
                                                       AdvancementType type, Criterion<?> trigger, AdvancementRewards.Builder rewards) {
         return Advancement.Builder.advancement()
                 .display(
@@ -27,7 +27,7 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                 .addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
     }
 
-    private AdvancementHolder newRewardsHolder(Item item, String name,
+    public AdvancementHolder newRewardsHolder(Item item, String name,
                                                       AdvancementType type, Criterion<?> trigger, AdvancementRewards.Builder rewards, AdvancementHolder parent) {
         return Advancement.Builder.advancement()
                 .parent(parent)
@@ -45,19 +45,19 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                 .addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
     }
 
-    private AdvancementHolder newItemPickupHolder(Item item, String name,
+    public AdvancementHolder newItemPickupHolder(Item item, String name,
                                                          AdvancementType type) {
         return newHolder(item, name, type,
                 InventoryChangeTrigger.TriggerInstance.hasItems(item));
     }
 
-    private AdvancementHolder newItemPickupHolder(Item item, String name,
+    public AdvancementHolder newItemPickupHolder(Item item, String name,
                                                          AdvancementType type, AdvancementHolder parent) {
         return newHolder(item, name, type,
                 InventoryChangeTrigger.TriggerInstance.hasItems(item), parent);
     }
 
-    private AdvancementHolder newHolder(Item item, String name,
+    public AdvancementHolder newHolder(Item item, String name,
                                                AdvancementType type, Criterion<?> trigger) {
         return Advancement.Builder.advancement()
                 .display(
@@ -71,7 +71,7 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                         false
                 ).addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
     }
-    private AdvancementHolder newHolder(Item item, String name,
+    public AdvancementHolder newHolder(Item item, String name,
                                                AdvancementType type, Criterion<?> trigger, AdvancementHolder parent) {
         return Advancement.Builder.advancement()
                 .parent(parent)

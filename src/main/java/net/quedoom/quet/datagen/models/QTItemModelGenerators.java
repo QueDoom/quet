@@ -13,7 +13,7 @@ public record QTItemModelGenerators(ItemModelGenerators generators) {
         return new QTItemModelGenerators(generators);
     }
 
-    void generate(Item item, ModelTemplate template) {
+    public void generate(Item item, ModelTemplate template) {
         generators.generateFlatItem(item, template);
     }
 
