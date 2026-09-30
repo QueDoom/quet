@@ -20,34 +20,45 @@ import java.util.function.Consumer;
 
 public abstract class QueTEquipmentAssetProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
+    private final String namespace;
+
     protected abstract void bootstrap(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer);
 
-    public QueTEquipmentAssetProvider(PackOutput packOutput, CompletableFuture<HolderLookup<HolderLookup.Provider>> completableFuture) {
+    public QueTEquipmentAssetProvider(PackOutput packOutput, String namespace) {
         this.pathProvider = createPathProvider(packOutput);
-
+        this.namespace = namespace;
     }
 
-    protected static void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key) {
-        consumer.accept(key, EquipmentClientInfo
-                .builder().addHumanoidLayers(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()))
+    protected Identifier of(String path) {
+        return Identifier.fromNamespaceAndPath(namespace, path);
+    }
+
+    protected void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key) {
+        consumer.accept(key, EquipmentClientInfo.builder()
+                .addHumanoidLayers(of(key.identifier().getPath()))
                 .build());
     }
-    protected static void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key, boolean dyeable) {
-        consumer.accept(key, EquipmentClientInfo
-                .builder().addHumanoidLayers(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()), dyeable)
+
+    protected void registerHumanoidArmor(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer, ResourceKey<EquipmentAsset> key, boolean dyeable) {
+        consumer.accept(key, EquipmentClientInfo.builder()
+                .addHumanoidLayers(of(key.identifier().getPath()), dyeable)
                 .build());
     }
-    protected static EquipmentClientInfo.Builder createMainHumanoidLayer(ResourceKey<EquipmentAsset> key, boolean dyeable) {
-        return EquipmentClientInfo.builder().addMainHumanoidLayer(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), key.identifier().getPath()), dyeable);
+
+    protected EquipmentClientInfo.Builder createMainHumanoidLayer(ResourceKey<EquipmentAsset> key, boolean dyeable) {
+        return EquipmentClientInfo.builder()
+                .addMainHumanoidLayer(of(key.identifier().getPath()), dyeable);
     }
-    protected static EquipmentClientInfo.Builder addLayer(EquipmentClientInfo.Builder builder, EquipmentClientInfo.LayerType type, String name) {
-        return builder.addLayers(type,
-                new EquipmentClientInfo.Layer(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name)));
+
+    protected EquipmentClientInfo.Builder addLayer(EquipmentClientInfo.Builder builder, EquipmentClientInfo.LayerType type, String name) {
+        return builder.addLayers(type, new EquipmentClientInfo.Layer(of(name)));
     }
-    protected static void registerHorseArmor(EquipmentClientInfo.Builder builder, String name) {
+
+    protected void registerHorseArmor(EquipmentClientInfo.Builder builder, String name) {
         addLayer(builder, EquipmentClientInfo.LayerType.HORSE_BODY, name);
     }
-    protected static void registerWolfArmor(EquipmentClientInfo.Builder builder, String name) {
+
+    protected void registerWolfArmor(EquipmentClientInfo.Builder builder, String name) {
         addLayer(builder, EquipmentClientInfo.LayerType.WOLF_BODY, name);
     }
 
@@ -57,14 +68,12 @@ public abstract class QueTEquipmentAssetProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
-        Map<ResourceKey<EquipmentAsset>, EquipmentClientInfo> equipmentAssets = new HashMap();
+        Map<ResourceKey<EquipmentAsset>, EquipmentClientInfo> equipmentAssets = new HashMap<>();
         bootstrap((id, asset) -> {
             if (equipmentAssets.putIfAbsent(id, asset) != null) {
-                throw new IllegalStateException("Tried to register equipment asset twice for id: " + String.valueOf(id));
+                throw new IllegalStateException("Tried to register equipment asset twice for id: " + id);
             }
         });
-        Codec codec = EquipmentClientInfo.CODEC;
-        Objects.requireNonNull(this.pathProvider);
-        return DataProvider.saveAll(cache, codec, this.pathProvider::json, equipmentAssets);
+        return DataProvider.saveAll(cache, EquipmentClientInfo.CODEC, pathProvider::json, equipmentAssets);
     }
 }

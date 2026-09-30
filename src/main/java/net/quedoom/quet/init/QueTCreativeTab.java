@@ -10,21 +10,26 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.quedoom.quet.misc.QueTObjectStorage;
+import org.jspecify.annotations.NonNull;
 
 public class QueTCreativeTab extends ModRegistrator {
-    protected static ResourceKey<CreativeModeTab> create(String name) {
-        return ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(namespace(), name));
+    public QueTCreativeTab(@NonNull String namespace) {
+        super(namespace);
     }
 
-    protected static CreativeModeTab register(Item icon, String name, CreativeModeTab.DisplayItemsGenerator displayItemsGenerator) {
+    public ResourceKey<CreativeModeTab> create(String name) {
+        return ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), of(name));
+    }
+
+    public CreativeModeTab register(Item icon, String name, CreativeModeTab.DisplayItemsGenerator displayItemsGenerator) {
         return FabricCreativeModeTab.builder()
                 .icon(() -> new ItemStack(icon))
-                .title(Component.translatable(ModRegistrator.namespace() + ".creativeModeTab." + name))
+                .title(translatable("creativeModeTab", name))
                 .displayItems(displayItemsGenerator)
                 .build();
     }
 
-    protected static void connectEntries(CreativeModeTab tab, ResourceKey<CreativeModeTab> key) {
+    public static void connectEntries(CreativeModeTab tab, ResourceKey<CreativeModeTab> key) {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
         QueTObjectStorage.addTab(key);
     }

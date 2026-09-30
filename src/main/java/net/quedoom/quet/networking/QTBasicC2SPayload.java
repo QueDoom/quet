@@ -40,7 +40,7 @@ public abstract class QTBasicC2SPayload implements CustomPacketPayload {
         );
     }
 
-    protected <T extends CustomPacketPayload> Type<T> loadType(String name) {
-        return new Type<>(ModRegistrator.of(name + "_payload"));
+    protected <T extends CustomPacketPayload> Type<T> loadType(String namespace, String name) {
+        return new Type<>(Identifier.fromNamespaceAndPath(namespace, name + "_payload"));
     }
 }

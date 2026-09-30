@@ -9,14 +9,19 @@ import net.quedoom.quet.init.ModRegistrator;
 
 import java.util.function.Consumer;
 
-public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) {
+public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer, ModRegistrator modRegistrator) {
+    
+    public QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer, String namespace) {
+        this(consumer, new ModRegistrator(namespace));
+    }
+    
     public AdvancementHolder newRewardsHolder(Item item, String name,
                                                       AdvancementType type, Criterion<?> trigger, AdvancementRewards.Builder rewards) {
         return Advancement.Builder.advancement()
                 .display(
                         item,
-                        ModRegistrator.translatable("advancement", "title." + name),
-                        ModRegistrator.translatable("advancement", "description." + name),
+                        modRegistrator.translatable("advancement", "title." + name),
+                        modRegistrator.translatable("advancement", "description." + name),
                         Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
                         type,
                         true,
@@ -24,7 +29,7 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                         false
                 )
                 .rewards(rewards)
-                .addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
+                .addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
     }
 
     public AdvancementHolder newRewardsHolder(Item item, String name,
@@ -33,8 +38,8 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                 .parent(parent)
                 .display(
                         item,
-                        ModRegistrator.translatable("advancement", "title." + name),
-                        ModRegistrator.translatable("advancement", "description." + name),
+                        modRegistrator.translatable("advancement", "title." + name),
+                        modRegistrator.translatable("advancement", "description." + name),
                         Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
                         type,
                         true,
@@ -42,7 +47,7 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                         false
                 )
                 .rewards(rewards)
-                .addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
+                .addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
     }
 
     public AdvancementHolder newItemPickupHolder(Item item, String name,
@@ -62,14 +67,14 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
         return Advancement.Builder.advancement()
                 .display(
                         item,
-                        ModRegistrator.translatable("advancement", "title." + name),
-                        ModRegistrator.translatable("advancement", "description." + name),
+                        modRegistrator.translatable("advancement", "title." + name),
+                        modRegistrator.translatable("advancement", "description." + name),
                         Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
                         type,
                         true,
                         true,
                         false
-                ).addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
+                ).addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
     }
     public AdvancementHolder newHolder(Item item, String name,
                                                AdvancementType type, Criterion<?> trigger, AdvancementHolder parent) {
@@ -77,13 +82,13 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer) 
                 .parent(parent)
                 .display(
                         item,
-                        ModRegistrator.translatable("advancement", "title." + name),
-                        ModRegistrator.translatable("advancement", "description." + name),
+                        modRegistrator.translatable("advancement", "title." + name),
+                        modRegistrator.translatable("advancement", "description." + name),
                         Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
                         type,
                         true,
                         true,
                         false
-                ).addCriterion(name, trigger).save(consumer, ModRegistrator.of(name));
+                ).addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
     }
 }

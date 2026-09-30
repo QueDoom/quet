@@ -10,29 +10,30 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.level.Level;
 import net.quedoom.quet.init.ModRegistrator;
+import org.jspecify.annotations.NonNull;
 
-public class QueTDamageType {
-    public static void bootstrap(BootstrapContext<DamageType> context) {
-        throw new AssertionError("Must be overridden in child Class");
+public class QueTDamageType extends ModRegistrator {
+    public QueTDamageType(@NonNull String namespace) {
+        super(namespace);
     }
 
-    protected static ResourceKey<DamageType> createKey(String name) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+    protected ResourceKey<DamageType> createKey(String name) {
+        return ResourceKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(namespace(), name));
     }
 
-    public static DamageSource create(Level level, ResourceKey<DamageType> key) {
+    public DamageSource create(Level level, ResourceKey<DamageType> key) {
         return new DamageSource(level.registryAccess().getOrThrow(Registries.DAMAGE_TYPE).value().getOrThrow(key));
     }
 
-    protected static DamageType type(String name) {
+    protected DamageType type(String name) {
         return type(name, 0.0F);
     }
 
-    protected static DamageType type(String name, float exhaustion) {
+    protected DamageType type(String name, float exhaustion) {
         return type(name, exhaustion, DamageEffects.HURT);
     }
 
-    protected static DamageType type(String name, float exhaustion, DamageEffects effects) {
+    protected DamageType type(String name, float exhaustion, DamageEffects effects) {
         return new DamageType(name, exhaustion, effects);
     }
 

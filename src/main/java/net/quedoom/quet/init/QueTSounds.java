@@ -6,16 +6,21 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import org.jspecify.annotations.NonNull;
 
 public class QueTSounds extends ModRegistrator {
 
-    protected static SoundEvent register(String name) {
-        Identifier id = ModRegistrator.of(name);
+    public QueTSounds(@NonNull String namespace) {
+        super(namespace);
+    }
+
+    public SoundEvent register(String name) {
+        Identifier id = of(name);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
     }
 
-    public static Holder.Reference<SoundEvent> registerDisc(String name) {
-        Identifier id = ModRegistrator.of(name);
+    public Holder.Reference<SoundEvent> registerDisc(String name) {
+        Identifier id = of(name);
         return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
     }
 

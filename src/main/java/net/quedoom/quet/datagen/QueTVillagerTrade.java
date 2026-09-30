@@ -6,9 +6,9 @@ import net.minecraft.world.level.ItemLike;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.villager.QTVillagerTrade;
 import net.quedoom.villager.VillagerLevels;
+import org.jspecify.annotations.NonNull;
 
-public class QueTVillagerTrade extends ModRegistrator {
-
+public class QueTVillagerTrade {
     protected static QTVillagerTrade trade(ResourceKey<VillagerProfession> villagerProfession,
                                            VillagerLevels villagerLevel, ItemLike from, ItemLike to) {
         return new QTVillagerTrade(villagerProfession, villagerLevel, from.asItem(), to.asItem());

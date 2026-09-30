@@ -56,10 +56,10 @@ public class QTVillagerTrade {
         return product;
     }
 
-    public ResourceKey<VillagerTrade> key() {
+    public ResourceKey<VillagerTrade> key(String namespace) {
         if (key.isEmpty()) {
             key = Optional.of(
-            ResourceKey.create(Registries.VILLAGER_TRADE, ModRegistrator.of(
+            ResourceKey.create(Registries.VILLAGER_TRADE, new ModRegistrator(namespace).of(
                     villagerProfession.identifier().getPath() + '_' +
                             villagerLevel.value() + '_' +
                             GetPath.get(payment.asItem()) + '_' +
@@ -169,35 +169,35 @@ public class QTVillagerTrade {
         };
     }
 
-    public void bootstrap(BootstrapContext<VillagerTrade> context,
+    public void bootstrap(BootstrapContext<VillagerTrade> context, String namespace,
                           int paymentAmount, int productAmount, int maxUses, int xp, float reputationDiscount,
                           final Optional<LootItemCondition> merchantPredicate,
                           final List<LootItemFunction> givenItemModifiers) {
-        context.register(key(), buildTrade(paymentAmount, productAmount, maxUses, xp, reputationDiscount,
+        context.register(key(namespace), buildTrade(paymentAmount, productAmount, maxUses, xp, reputationDiscount,
                 merchantPredicate, givenItemModifiers));
     }
 
-    public void bootstrap(BootstrapContext<VillagerTrade> context,
+    public void bootstrap(BootstrapContext<VillagerTrade> context, String namespace,
                           int paymentAmount, int maxUses, int xp, float reputationDiscount,
                           final Optional<LootItemCondition> merchantPredicate,
                           final List<LootItemFunction> givenItemModifiers) {
-        context.register(key(), buildTrade(paymentAmount, maxUses, xp, reputationDiscount,
+        context.register(key(namespace), buildTrade(paymentAmount, maxUses, xp, reputationDiscount,
                 merchantPredicate, givenItemModifiers));
     }
 
-    public void bootstrap(BootstrapContext<VillagerTrade> context,
+    public void bootstrap(BootstrapContext<VillagerTrade> context, String namespace,
                           int paymentAmount, int maxUses, int xp, float reputationDiscount) {
-        context.register(key(), buildTrade(paymentAmount, maxUses, xp, reputationDiscount));
+        context.register(key(namespace), buildTrade(paymentAmount, maxUses, xp, reputationDiscount));
     }
 
-    public void bootstrap(BootstrapContext<VillagerTrade> context,
+    public void bootstrap(BootstrapContext<VillagerTrade> context, String namespace,
                           int paymentAmount, int maxUses, int xp) {
-        context.register(key(), buildTrade(paymentAmount, maxUses, xp));
+        context.register(key(namespace), buildTrade(paymentAmount, maxUses, xp));
     }
 
-    public void bootstrap(BootstrapContext<VillagerTrade> context,
+    public void bootstrap(BootstrapContext<VillagerTrade> context, String namespace,
                           int paymentAmount, int xp) {
-        context.register(key(), buildTrade(paymentAmount, xp));
+        context.register(key(namespace), buildTrade(paymentAmount, xp));
     }
 
     public VillagerTrade buildTrade(int paymentAmount, int productAmount, int maxUses, int xp, float reputationDiscount,

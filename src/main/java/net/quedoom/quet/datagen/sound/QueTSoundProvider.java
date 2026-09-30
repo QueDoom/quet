@@ -11,9 +11,11 @@ public abstract class QueTSoundProvider extends FabricSoundsProvider {
         super(output, registriesFuture);
     }
 
+    protected abstract String getNamespace();
+
     @Override
     protected void configure(HolderLookup.Provider registryLookup, SoundExporter exporter) {
-        configure(registryLookup, exporter, QTSoundExporter.of(exporter));
+        configure(registryLookup, exporter, QTSoundExporter.of(exporter, getNamespace()));
     }
 
     protected abstract void configure(HolderLookup.Provider registryLookup, SoundExporter exporter, QTSoundExporter qtExporter);

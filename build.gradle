@@ -18,6 +18,7 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+	withJavadocJar()
 
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
@@ -29,6 +30,7 @@ modrinth {
 	versionNumber = project.version // You don't need to set this manually. Will fail if Modrinth has this version already
 	versionType = "release" // This is the default -- can also be `beta` or `alpha`
 	uploadFile = tasks.jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+	additionalFiles = [tasks.sourcesJar]
 	gameVersions = [project.minecraft_version] // Must be an array, even with only one version
 	loaders = ["fabric"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
 	dependencies { // A special DSL for creating dependencies

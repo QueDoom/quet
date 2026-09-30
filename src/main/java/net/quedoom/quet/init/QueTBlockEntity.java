@@ -7,14 +7,19 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.jspecify.annotations.NonNull;
 
 public class QueTBlockEntity extends ModRegistrator {
-    protected static <T extends BlockEntity> BlockEntityType<T> register(
+    public QueTBlockEntity(@NonNull String namespace) {
+        super(namespace);
+    }
+
+    public <T extends BlockEntity> BlockEntityType<T> register(
             String name,
             FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory,
             Block... blocks
     ) {
-        Identifier id = ModRegistrator.of(name);
+        Identifier id = of(name);
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
     }
 

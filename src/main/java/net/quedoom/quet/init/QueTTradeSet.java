@@ -11,21 +11,25 @@ import net.minecraft.world.item.trading.TradeSet;
 import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
-public class QueTTradeSet {
-
-    private static ResourceKey<TradeSet> createWithLevel(final String name, final int level) {
-        return ResourceKey.create(Registries.TRADE_SET, ModRegistrator.of(name + "/level" + level));
+public class QueTTradeSet extends ModRegistrator {
+    public QueTTradeSet(@NonNull String namespace) {
+        super(namespace);
     }
 
-    public static Holder.Reference<TradeSet> register(final BootstrapContext<TradeSet> context,
+    public ResourceKey<TradeSet> createWithLevel(final String name, final int level) {
+        return ResourceKey.create(Registries.TRADE_SET, of(name + "/level" + level));
+    }
+
+    public Holder.Reference<TradeSet> register(final BootstrapContext<TradeSet> context,
                                                       final ResourceKey<TradeSet> resourceKey, final TagKey<VillagerTrade> tradeTag) {
         return register(context, resourceKey, tradeTag, ConstantValue.exactly(2.0F));
     }
 
-    public static Holder.Reference<TradeSet> register(final BootstrapContext<TradeSet> context, final ResourceKey<TradeSet> resourceKey,
+    public Holder.Reference<TradeSet> register(final BootstrapContext<TradeSet> context, final ResourceKey<TradeSet> resourceKey,
                                                       final TagKey<VillagerTrade> tradeTag, final NumberProvider numberProvider) {
         return context.register(resourceKey, new TradeSet(context.lookup(Registries.VILLAGER_TRADE).getOrThrow(tradeTag),
                 numberProvider, false, Optional.of(resourceKey.identifier().withPrefix("trade_set/"))));

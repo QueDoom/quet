@@ -14,9 +14,11 @@ public abstract class QueTAdvancementProvider extends FabricAdvancementProvider 
         super(output, registryLookup);
     }
 
+    protected abstract String namespace();
+
     @Override
     public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer) {
-        generateAdvancement(registryLookup, consumer, new QTAdvancementHolderConsumer(consumer));
+        generateAdvancement(registryLookup, consumer, new QTAdvancementHolderConsumer(consumer, namespace()));
     }
 
     public abstract void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer, QTAdvancementHolderConsumer qtConsumer);

@@ -12,20 +12,20 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implements LocalizedGetPath {
+public record QTTooltip(Consumer<Component> builder, @Nullable Item item, String namespace) implements LocalizedGetPath {
     public static final String SHIFT = "tooltip.quet.standard.press_shift";
     public static final String CONTROL = "tooltip.quet.standard.press_control";
     public static final String ALT = "tooltip.quet.standard.press_alt";
 
-    public static QTTooltip of(Consumer<Component> builder, @NonNull Item item) {
-        return new QTTooltip(builder, item);
+    public static QTTooltip of(Consumer<Component> builder, @NonNull Item item, String namespace) {
+        return new QTTooltip(builder, item, namespace);
     }
-    public static QTTooltip of(Consumer<Component> builder) {
-        return new QTTooltip(builder, null);
+    public static QTTooltip of(Consumer<Component> builder, String namespace) {
+        return new QTTooltip(builder, null, namespace);
     }
 
-    public static void addStatic(Consumer<Component> builder, Item item) {
-        builder.accept(Component.translatable("tooltip." + ModRegistrator.namespace() + GetPath.get(item)));
+    public static void addStatic(Consumer<Component> builder, Item item, String namespace) {
+        builder.accept(Component.translatable("tooltip." + namespace + GetPath.get(item)));
     }
     public static void addStaticCustomKey(Consumer<Component> builder, String key) {
         builder.accept(Component.translatable(key));
@@ -42,7 +42,7 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
      * @param item Determines what the key will look like (example: "tooltip.namespace.item")
      */
     public void addStatic(Item item) {
-        addStatic(this.builder, item);
+        addStatic(this.builder, item, namespace);
     }
     public void addStatic() {
         if (item == null) throw new NullPointerException("You need to call QTTooltip#addStatic(Item item) instead (add an item to the tooltip)");
@@ -69,7 +69,7 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
 
     /**
      * Adds a tooltip to the item: <br>
-     * If you create a new QTTooltip using the {@link QTTooltip#of(Consumer, Item)} method that has both
+     * If you create a new QTTooltip using the {@link QTTooltip#of(Consumer, Item, String)} method that has both
      * and {@link Item} and a Builder
      * you can use the method {@link QTTooltip#addShift()} (or other keys) <br>
      * This makes it easy to add tooltips that have a "hidden" message if you do a specific action (example: press a key)
@@ -79,15 +79,15 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
      * @param customNonShiftKey The key when the condition is false
      * @param item              Item used to automatically create a translation key
      */
-    public static void addShowIf(boolean pressed, Consumer<Component> builder, String customNonShiftKey, Item item) {
+    public static void addShowIf(boolean pressed, Consumer<Component> builder, String customNonShiftKey, Item item, String namespace) {
         if (pressed)
-            builder.accept(Component.translatable("tooltip." + ModRegistrator.namespace() + GetPath.get(item)));
+            builder.accept(Component.translatable("tooltip." + namespace + GetPath.get(item)));
         else
             builder.accept(Component.translatable(customNonShiftKey));
     }
 
     public void addShowIf(boolean pressed, String customNonShiftKey, Item item) {
-        addShowIf(pressed, this.builder, customNonShiftKey, item);
+        addShowIf(pressed, this.builder, customNonShiftKey, item, namespace);
     }
 
     /**
@@ -95,29 +95,29 @@ public record QTTooltip(Consumer<Component> builder, @Nullable Item item) implem
      */
     public void addShowIf(boolean pressed, String customNonShiftKey) {
         if (item == null) throw new NullPointerException("You need to call QTTooltip#addShowIf(boolean pressed, String customNonShiftKey, Item item) instead (add an item to the tooltip)");
-        addShowIf(pressed, this.builder, customNonShiftKey, item);
+        addShowIf(pressed, this.builder, customNonShiftKey, item, namespace);
     }
 
 
-    public static void addShift(Consumer<Component> builder, String customNonShiftKey, Item item) {
-        addShowIf(Minecraft.getInstance().hasShiftDown(), builder, customNonShiftKey, item);
+    public static void addShift(Consumer<Component> builder, String customNonShiftKey, Item item, String namespace) {
+        addShowIf(Minecraft.getInstance().hasShiftDown(), builder, customNonShiftKey, item, namespace);
     }
-    public static void addShift(Consumer<Component> builder, Item item) {
-        addShift(builder, SHIFT, item);
-    }
-
-    public static void addControl(Consumer<Component> builder, String customNonControlKey, Item item) {
-        addShowIf(Minecraft.getInstance().hasControlDown(), builder, customNonControlKey, item);
-    }
-    public static void addControl(Consumer<Component> builder, Item item) {
-        addControl(builder, CONTROL, item);
+    public static void addShift(Consumer<Component> builder, Item item, String namespace) {
+        addShift(builder, SHIFT, item, namespace);
     }
 
-    public static void addAlt(Consumer<Component> builder, String customNonAltKey, Item item) {
-        addShowIf(Minecraft.getInstance().hasAltDown(), builder, customNonAltKey, item);
+    public static void addControl(Consumer<Component> builder, String customNonControlKey, Item item, String namespace) {
+        addShowIf(Minecraft.getInstance().hasControlDown(), builder, customNonControlKey, item, namespace);
     }
-    public static void addAlt(Consumer<Component> builder, Item item) {
-        addAlt(builder, ALT, item);
+    public static void addControl(Consumer<Component> builder, Item item, String namespace) {
+        addControl(builder, CONTROL, item, namespace);
+    }
+
+    public static void addAlt(Consumer<Component> builder, String customNonAltKey, Item item, String namespace) {
+        addShowIf(Minecraft.getInstance().hasAltDown(), builder, customNonAltKey, item, namespace);
+    }
+    public static void addAlt(Consumer<Component> builder, Item item, String namespace) {
+        addAlt(builder, ALT, item, namespace);
     }
 
 

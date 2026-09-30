@@ -4,11 +4,11 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
+import org.jspecify.annotations.NonNull;
 
-public class QueTFood extends ModRegistrator {
+public class QueTFood {
     private static final Consumable.Builder FOOD = Consumables.defaultFood();
     private static final Consumable.Builder DRINK = Consumables.defaultDrink();
-
 
     protected static Consumable.Builder food() {
         return FOOD;

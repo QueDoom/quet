@@ -58,22 +58,27 @@ public class CompleteWoodSet {
     public final @Nullable Block PRESSURE_PLATE;
     public final @Nullable Block BUTTON;
 
+    private final ModRegistrator modRegistrator;
+    public final String name;
+
     public final TagKey<Item> ITEM_LOG_TAG;
     public final TagKey<Block> BLOCK_LOG_TAG;
 
-    public final String name;
     public final WoodType woodType;
     public final BlockSetType blockSetType;
     public final boolean isFireProof;
     public final boolean isOverwoldAndNatural;
 
-    private CompleteWoodSet(String name, WoodType woodType, BlockSetType setType, boolean isFireProof, boolean isOverwoldAndNatural,
+
+    private CompleteWoodSet(String name, WoodType woodType, BlockSetType setType, boolean isFireProof, boolean isOverwoldAndNatural, ModRegistrator modRegistrator,
                             @Nullable Block log, @Nullable Block stripped, @Nullable Block wood, @Nullable Block strippedWood,
                             @Nullable Block plank, @Nullable Block stairs, @Nullable Block slab, @Nullable Block shelf,
                             @Nullable Block sign, @Nullable Item signItem, @Nullable Block wallSign, @Nullable Block hangingSign,
                             @Nullable Item hangingSignItem, @Nullable Block wallHangingSign, @Nullable Block fence, @Nullable Block gate,
                             @Nullable Block trapdoor, @Nullable Block door, @Nullable Item doorItem, @Nullable Block pressurePlate, @Nullable Block button) {
         this.name = name;
+        this.modRegistrator = modRegistrator;
+
         this.woodType = woodType;
         this.blockSetType = setType;
         this.isFireProof = isFireProof;
@@ -99,6 +104,7 @@ public class CompleteWoodSet {
         this.DOOR_ITEM = doorItem;
         this.PRESSURE_PLATE = pressurePlate;
         this.BUTTON = button;
+
         this.ITEM_LOG_TAG = createItemTag(name + "_logs");
         this.BLOCK_LOG_TAG = createBlockTag(name + "_logs");
     }
@@ -119,11 +125,14 @@ public class CompleteWoodSet {
         return BUTTON != null;
     }
 
-    public static CompleteWoodSet.Builder incomplete(String name, WoodType type, boolean isFireProof, boolean isOverwoldAndNatural) {
-        return new CompleteWoodSet.Builder(name, type, isFireProof, isOverwoldAndNatural);
+    public static CompleteWoodSet.Builder incomplete(String name, WoodType type, boolean isFireProof, boolean isOverwoldAndNatural, String namespace) {
+        return new CompleteWoodSet.Builder(name, type, isFireProof, isOverwoldAndNatural, namespace);
     }
 
     public static class Builder {
+        private final ModRegistrator modRegistrator;
+        private final String name;
+
         private Block LOG;
         private Block STRIPPED;
         private Block WOOD;
@@ -146,15 +155,16 @@ public class CompleteWoodSet {
         private @Nullable Item DOOR_ITEM;
         private @Nullable Block PRESSURE_PLATE;
         private @Nullable Block BUTTON;
-
-        private final String name;
         private final WoodType woodType;
         private final boolean isFireProof;
         public final boolean isOverwoldAndNatural;
 
-        private Builder(String name, WoodType type, boolean isFireProof, boolean isOverwoldAndNatural) {
+
+        private Builder(String name, WoodType type, boolean isFireProof, boolean isOverwoldAndNatural, String namespace) {
+            this.modRegistrator = new ModRegistrator(namespace);
             this.name = name;
             this.woodType = type;
+            this.SET_TYPE = type.setType();
             this.isFireProof = isFireProof;
             this.isOverwoldAndNatural = isOverwoldAndNatural;
         }
@@ -189,8 +199,10 @@ public class CompleteWoodSet {
                 this.WALL_SIGN = register(genName("wall_sign"), p -> new WallSignBlock(woodType, p), Blocks.wallVariant(plank, false).forceSolidOn().strength(1F), false);
                 this.HANGING_SIGN = register(genName("hanging_sign"), p -> new CeilingHangingSignBlock(woodType, p), plankProperties.forceSolidOn().noOcclusion().strength(1F), false);
                 this.WALL_HANGING_SIGN = register(genName("wall_hanging_sign"), p -> new WallHangingSignBlock(woodType, p), Blocks.wallVariant(plank, false).forceSolidOn().strength(1F), false);
-                this.SIGN_ITEM = registerBlockItem(name, plank, (b, p) -> new SignItem(b, this.WALL_SIGN, p), new Item.Properties().stacksTo(16));
-                this.HANGING_SIGN_ITEM = registerBlockItem(name, plank, (b, p) -> new HangingSignItem(b, this.WALL_HANGING_SIGN, p), new Item.Properties().stacksTo(16));
+                this.SIGN_ITEM = registerBlockItem(genName("sign"), this.SIGN,
+                        (b, p) -> new SignItem(b, this.WALL_SIGN, p), new Item.Properties().stacksTo(16));
+                this.HANGING_SIGN_ITEM = registerBlockItem(genName("hanging_sign"), this.HANGING_SIGN,
+                        (b, p) -> new HangingSignItem(b, this.WALL_HANGING_SIGN, p), new Item.Properties().stacksTo(16));
 
                 QueTObjectStorage.addAutotranslate(SIGN, WALL_SIGN, HANGING_SIGN, WALL_HANGING_SIGN);
                 QueTObjectStorage.addAutotranslate(SIGN_ITEM, HANGING_SIGN_ITEM);
@@ -213,7 +225,7 @@ public class CompleteWoodSet {
             if (this.TRAPDOOR == null) {
                 this.TRAPDOOR = registerTrapdoor(genName("trapdoor"), SET_TYPE, plank);
                 this.DOOR = registerDoor(genName("door"), SET_TYPE, plank);
-                this.DOOR_ITEM = registerBlockItem(name, DOOR, DoubleHighBlockItem::new);
+                this.DOOR_ITEM = registerBlockItem(genName("door"), DOOR, DoubleHighBlockItem::new);
                 QueTObjectStorage.addAutotranslate(DOOR, TRAPDOOR);
             }
             return this;
@@ -234,7 +246,7 @@ public class CompleteWoodSet {
 
         public CompleteWoodSet complete() {
             return new CompleteWoodSet(
-                    this.name, this.woodType, this.SET_TYPE, this.isFireProof, this.isOverwoldAndNatural,
+                    this.name, this.woodType, this.SET_TYPE, this.isFireProof, this.isOverwoldAndNatural, modRegistrator,
                     this.LOG, this.STRIPPED, this.WOOD, this.STRIPPED_WOOD, this.PLANK, this.STAIRS,
                     this.SLAB, this.SHELF, this.SIGN, this.SIGN_ITEM, this.WALL_SIGN, this.HANGING_SIGN,
                     this.HANGING_SIGN_ITEM, this.WALL_HANGING_SIGN, this.FENCE, this.GATE, this.TRAPDOOR,
@@ -248,6 +260,81 @@ public class CompleteWoodSet {
         private String stripped(String suffix) {
             return "stripped_" + this.name + '_' + suffix;
         }
+
+        //region register
+        private Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties, boolean shouldRegisterItem) {
+            ResourceKey<Block> blockKey = keyOfBlock(name);
+            Block block = blockFactory.apply(properties.setId(blockKey));
+
+            if (shouldRegisterItem) {
+                ResourceKey<Item> itemKey = keyOfItem(name);
+
+                BlockItem blockItem = new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
+                Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
+            }
+
+            return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
+        }
+
+        private Item registerBlockItem(String name, Block block, BiFunction<Block, Item.Properties, Item> itemFactory, Item.Properties properties) {
+            ResourceKey<Item> itemKey = keyOfItem(name);
+            Item item = itemFactory.apply(block, properties.setId(itemKey).useBlockDescriptionPrefix());
+            return Registry.register(BuiltInRegistries.ITEM, itemKey, item);
+        }
+
+        private Item registerBlockItem(String name, Block block, BiFunction<Block, Item.Properties, Item> itemFactory) {
+            return registerBlockItem(name, block, itemFactory, new Item.Properties());
+        }
+
+        private Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties) {
+            ResourceKey<Block> blockKey = keyOfBlock(name);
+            Block block = blockFactory.apply(properties.setId(blockKey));
+
+            ResourceKey<Item> itemKey = keyOfItem(name);
+
+            BlockItem blockItem = new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
+            Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
+
+            return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
+        }
+
+        private ResourceKey<Block> keyOfBlock(String name) {
+            return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(modRegistrator.namespace(), name));
+        }
+
+        private ResourceKey<Item> keyOfItem(String name) {
+            return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(modRegistrator.namespace(), name));
+        }
+
+        protected Block registerShelf(String name, Block baseBlock) {
+            return register(name, ShelfBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+        }
+        protected Block registerStair(String name, Block baseBlock) {
+            return register(name, p -> new StairBlock(baseBlock.defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
+        }
+        protected Block registerSlab(String name, Block baseBlock) {
+            return register(name, SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+        }
+        protected Block registerWoodenButton(String name, BlockSetType type, MapColor color) {
+            return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties().mapColor(color));
+        }
+        protected Block registerPressurePlate(String name, BlockSetType type, MapColor mapColor) {
+            return register(name, p -> new PressurePlateBlock(type, p), BlockBehaviour.Properties.of().forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(mapColor));
+        }
+        protected Block registerFence(String name, Block baseBlock) {
+            return register(name, FenceBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
+        }
+        protected Block registerFenceGate(String name, WoodType type, Block baseBlock) {
+            return register(name, p -> new FenceGateBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
+        }
+        protected Block registerDoor(String name, BlockSetType type, Block baseBlock) {
+            return register(name, p -> new DoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock).pushReaction(PushReaction.DESTROY).strength(3.0F).noOcclusion(), false);
+        }
+        protected Block registerTrapdoor(String name, BlockSetType type, Block baseBlock) {
+            return register(name, p -> new TrapDoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock).noOcclusion().isValidSpawn(Blocks::never));
+        }
+        //endregion registe
+
     }
 
     //region datagen
@@ -339,90 +426,11 @@ public class CompleteWoodSet {
     //endregion datagen
 
     protected TagKey<Block> createBlockTag(String name) {
-        return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(modRegistrator.namespace(), name));
     }
 
     protected TagKey<Item> createItemTag(String name) {
-        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(modRegistrator.namespace(), name));
     }
 
-    //region register
-    private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties, boolean shouldRegisterItem) {
-        ResourceKey<Block> blockKey = keyOfBlock(name);
-        Block block = blockFactory.apply(properties.setId(blockKey));
-
-        if (shouldRegisterItem) {
-            ResourceKey<Item> itemKey = keyOfItem(name);
-
-            BlockItem blockItem = new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
-            Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
-        }
-
-        return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
-    }
-
-    private static Item registerBlockItem(String name, Block block, BiFunction<Block, Item.Properties, Item> itemFactory, Item.Properties properties) {
-        ResourceKey<Item> itemKey = keyOfItem(name);
-        Item item = itemFactory.apply(block, properties.setId(itemKey).useBlockDescriptionPrefix());
-        return Registry.register(BuiltInRegistries.ITEM, itemKey, item);
-    }
-
-    private static Item registerBlockItem(String name, Block block, BiFunction<Block, Item.Properties, Item> itemFactory) {
-        return registerBlockItem(name, block, itemFactory, new Item.Properties());
-    }
-
-    private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties) {
-        ResourceKey<Block> blockKey = keyOfBlock(name);
-        Block block = blockFactory.apply(properties.setId(blockKey));
-
-        ResourceKey<Item> itemKey = keyOfItem(name);
-
-        BlockItem blockItem = new BlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
-        Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
-
-        return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
-    }
-
-    private static ResourceKey<Block> keyOfBlock(String name) {
-        if (ModRegistrator.namespace() == null) {
-            throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
-        }
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
-    }
-
-    private static ResourceKey<Item> keyOfItem(String name) {
-        if (ModRegistrator.namespace() == null) {
-            throw new NullPointerException("Unset namespace in " + ModRegistrator.class);
-        }
-        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
-    }
-
-    protected static Block registerShelf(String name, Block baseBlock) {
-        return register(name, ShelfBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
-    }
-    protected static Block registerStair(String name, Block baseBlock) {
-        return register(name, p -> new StairBlock(baseBlock.defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
-    }
-    protected static Block registerSlab(String name, Block baseBlock) {
-        return register(name, SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
-    }
-    protected static Block registerWoodenButton(String name, BlockSetType type, MapColor color) {
-        return register(name, p -> new ButtonBlock(type, 30, p), Blocks.buttonProperties().mapColor(color));
-    }
-    protected static Block registerPressurePlate(String name, BlockSetType type, MapColor mapColor) {
-        return register(name, p -> new PressurePlateBlock(type, p), BlockBehaviour.Properties.of().forceSolidOn().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(mapColor));
-    }
-    protected static Block registerFence(String name, Block baseBlock) {
-        return register(name, FenceBlock::new, BlockBehaviour.Properties.ofFullCopy(baseBlock));
-    }
-    protected static Block registerFenceGate(String name, WoodType type, Block baseBlock) {
-        return register(name, p -> new FenceGateBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock));
-    }
-    protected static Block registerDoor(String name, BlockSetType type, Block baseBlock) {
-        return register(name, p -> new DoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock).pushReaction(PushReaction.DESTROY).strength(3.0F).noOcclusion(), false);
-    }
-    protected static Block registerTrapdoor(String name, BlockSetType type, Block baseBlock) {
-        return register(name, p -> new TrapDoorBlock(type, p), BlockBehaviour.Properties.ofFullCopy(baseBlock).noOcclusion().isValidSpawn(Blocks::never));
-    }
-    //endregion registe
 }

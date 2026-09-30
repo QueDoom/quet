@@ -16,9 +16,11 @@ public abstract class QueTVillagerTradeTagProvider extends FabricTagsProvider<Vi
         super(output, Registries.VILLAGER_TRADE, registryLookupFuture);
     }
 
+    protected abstract String getNamepace();
+
     protected void add(TagKey<VillagerTrade> tradeTagKey, QTVillagerTrade qtTrade) {
         getOrCreateRawBuilder(tradeTagKey)
-                .add(TagEntry.element(qtTrade.key().identifier()));
+                .add(TagEntry.element(qtTrade.key(getNamepace()).identifier()));
     }
 
     protected void add(TagKey<VillagerTrade> tradeTagKey, QTVillagerTrade... qtTrades) {
@@ -29,7 +31,7 @@ public abstract class QueTVillagerTradeTagProvider extends FabricTagsProvider<Vi
 
     protected void add(QTVillagerTrade qtTrade) {
         getOrCreateRawBuilder(qtTrade.tag())
-                .add(TagEntry.element(qtTrade.key().identifier()));
+                .add(TagEntry.element(qtTrade.key(getNamepace()).identifier()));
     }
 
     protected void add(QTVillagerTrade... qtVillagerTrades) {

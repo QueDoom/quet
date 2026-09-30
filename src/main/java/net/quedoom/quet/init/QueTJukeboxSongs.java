@@ -10,14 +10,19 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Util;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.JukeboxSong;
+import org.jspecify.annotations.NonNull;
 
 public class QueTJukeboxSongs extends ModRegistrator {
 
-    protected static ResourceKey<JukeboxSong> create(String name) {
-        return ResourceKey.create(Registries.JUKEBOX_SONG, ModRegistrator.of(name));
+    public QueTJukeboxSongs(@NonNull String namespace) {
+        super(namespace);
     }
 
-    protected static void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key,
+    public ResourceKey<JukeboxSong> create(String name) {
+        return ResourceKey.create(Registries.JUKEBOX_SONG, of(name));
+    }
+
+    public void register(BootstrapContext<JukeboxSong> context, ResourceKey<JukeboxSong> key,
                                    Holder.Reference<SoundEvent> event, int lengthInSeconds, int comparatorOutput) {
         context.register(key, new JukeboxSong(event,
                 Component.translatable(Util.makeDescriptionId("jukebox_song", key.identifier())), lengthInSeconds, comparatorOutput));

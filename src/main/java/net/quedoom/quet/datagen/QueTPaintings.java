@@ -8,42 +8,47 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.quedoom.quet.init.ModRegistrator;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Optional;
 
-public class QueTPaintings {
-    protected static ResourceKey<PaintingVariant> create(final String name) {
-        return  ResourceKey.create(Registries.PAINTING_VARIANT, Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name));
+public class QueTPaintings extends ModRegistrator {
+    public QueTPaintings(@NonNull String namespace) {
+        super(namespace);
     }
 
-    protected static void register(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final int width, final int height, final boolean hasAuthor) {
+    protected ResourceKey<PaintingVariant> create(final String name) {
+        return  ResourceKey.create(Registries.PAINTING_VARIANT, of(name));
+    }
+
+    protected void register(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final int width, final int height, final boolean hasAuthor) {
         context.register(key, new PaintingVariant(width, height, key.identifier(),
                 Optional.of(Component.translatable(key.identifier().toLanguageKey("painting", "title")).withStyle(ChatFormatting.YELLOW)),
                 hasAuthor ? Optional.of(Component.translatable(key.identifier().toLanguageKey("painting", "author")).withStyle(ChatFormatting.GRAY)) : Optional.empty()));
     }
 
-    protected static void register1x1(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register1x1(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 1, 1, hasAuthor);
     }
-    protected static void register1x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register1x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 1, 2, hasAuthor);
     }
-    protected static void register2x1(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register2x1(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 2, 1, hasAuthor);
     }
-    protected static void register2x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register2x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 2, 2, hasAuthor);
     }
-    protected static void register3x4(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register3x4(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 3, 4, hasAuthor);
     }
-    protected static void register4x4(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register4x4(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 4, 4, hasAuthor);
     }
-    protected static void register3x3(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register3x3(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 3, 3, hasAuthor);
     }
-    protected static void register3x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
+    protected void register3x2(final BootstrapContext<PaintingVariant> context, final ResourceKey<PaintingVariant> key, final boolean hasAuthor) {
         register(context, key, 3, 2, hasAuthor);
     }
 }

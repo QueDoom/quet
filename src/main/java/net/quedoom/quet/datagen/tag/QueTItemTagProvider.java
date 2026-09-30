@@ -19,6 +19,8 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
         super(output, registryLookupFuture);
     }
 
+    protected abstract ModRegistrator getRegistrator();
+
     @SuppressWarnings("All")
     protected void add(CompleteWoodSet woodSet) {
         valueLookupBuilder(woodSet.ITEM_LOG_TAG)
@@ -74,7 +76,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
     protected void addMisc() {
         List<Item> discs = QueTObjectStorage.discs();
         if (discs.isEmpty()) {
-            ModRegistrator.logInfo("No Discs registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Discs registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
             return;
         }
         for (Item disc : discs) {
@@ -93,7 +95,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
     protected void addBuckets() {
         List<Item> buckets = QueTObjectStorage.buckets();
         if (buckets.isEmpty()) {
-            ModRegistrator.logInfo("No Buckets registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Buckets registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
             return;
         }
         for (Item bucket : buckets) {
@@ -109,7 +111,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
         List<Item> boots = QueTObjectStorage.boots();
 
         if (helmets.isEmpty()) {
-            ModRegistrator.logInfo("No Helmets registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Helmets registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item helmet : helmets) {
                 valueLookupBuilder(ItemTags.HEAD_ARMOR).add(helmet);
@@ -117,7 +119,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
             }
         }
         if (chestplates.isEmpty()) {
-            ModRegistrator.logInfo("No Chestplates registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Chestplates registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item chestplate : chestplates) {
                 valueLookupBuilder(ItemTags.CHEST_ARMOR).add(chestplate);
@@ -125,7 +127,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
             }
         }
         if (leggings.isEmpty()) {
-            ModRegistrator.logInfo("No Leggings registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Leggings registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item legging : leggings) {
                 valueLookupBuilder(ItemTags.LEG_ARMOR).add(legging);
@@ -133,7 +135,7 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
             }
         }
         if (boots.isEmpty()) {
-            ModRegistrator.logInfo("No Boots registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Boots registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item boot : boots) {
                 valueLookupBuilder(ItemTags.FOOT_ARMOR).add(boot);
@@ -155,70 +157,70 @@ public abstract class QueTItemTagProvider extends FabricTagsProvider.ItemTagsPro
         List<Item> crossbows = QueTObjectStorage.crossbows();
 
         if (swords.isEmpty()) {
-            ModRegistrator.logInfo("No Swords registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Swords registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item sword : swords) {
                 valueLookupBuilder(ItemTags.SWORDS).add(sword);
             }
         }
         if (axes.isEmpty()) {
-            ModRegistrator.logInfo("No Axes registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Axes registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item axe : axes) {
                 valueLookupBuilder(ItemTags.AXES).add(axe);
             }
         }
         if (pickaxes.isEmpty()) {
-            ModRegistrator.logInfo("No Pickaxes registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Pickaxes registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item pickaxe : pickaxes) {
                 valueLookupBuilder(ItemTags.PICKAXES).add(pickaxe);
             }
         }
         if (hoes.isEmpty()) {
-            ModRegistrator.logInfo("No Hoes registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Hoes registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item hoe : hoes) {
                 valueLookupBuilder(ItemTags.HOES).add(hoe);
             }
         }
         if (shovels.isEmpty()) {
-            ModRegistrator.logInfo("No Shovels registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Shovels registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item shovel : shovels) {
                 valueLookupBuilder(ItemTags.SHOVELS).add(shovel);
             }
         }
         if (spears.isEmpty()) {
-            ModRegistrator.logInfo("No Spears registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Spears registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item spear : spears) {
                 valueLookupBuilder(ItemTags.SPEARS).add(spear);
             }
         }
         if (shears.isEmpty()) {
-            ModRegistrator.logInfo("No Shears registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Shears registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item shear : shears) {
                 valueLookupBuilder(ConventionalItemTags.SHEAR_TOOLS).add(shear);
             }
         }
         if (brushes.isEmpty()) {
-            ModRegistrator.logInfo("No Brushes registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Brushes registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item brush : brushes) {
                 valueLookupBuilder(ConventionalItemTags.BRUSH_TOOLS).add(brush);
             }
         }
         if (bows.isEmpty()) {
-            ModRegistrator.logInfo("No Bows registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Bows registered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item bow : bows) {
                 valueLookupBuilder(ConventionalItemTags.BOW_TOOLS).add(bow);
             }
         }
         if (crossbows.isEmpty()) {
-            ModRegistrator.logInfo("No Crossbowsregistered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            getRegistrator().logInfo("No Crossbowsregistered in " + QTTranslationBuilder.snakeToTitleCase(getRegistrator().namespace()) + ". Skipping!");
         } else {
             for (Item crossbow : crossbows) {
                 valueLookupBuilder(ConventionalItemTags.CROSSBOW_TOOLS).add(crossbow);

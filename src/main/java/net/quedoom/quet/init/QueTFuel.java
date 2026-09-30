@@ -5,7 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.quedoom.quet.block.CompleteWoodSet;
 
-public class QueTFuel extends ModRegistrator {
+public class QueTFuel {
 
     protected static void register(Item item, float itemsSmelt) {
         register(item, (int) (itemsSmelt * 200));

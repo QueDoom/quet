@@ -21,11 +21,6 @@ import java.util.List;
 public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
     public static boolean SHOULD_AUTO_TRANSLATE_BY_DEFAULT = false;
 
-
-    public static QTTranslationBuilder of(FabricLanguageProvider.TranslationBuilder builder) {
-        return new QTTranslationBuilder(builder, ModRegistrator.namespace());
-    }
-
     public static QTTranslationBuilder of(FabricLanguageProvider.TranslationBuilder builder, String namespace) {
         return new QTTranslationBuilder(builder, namespace);
     }
@@ -87,14 +82,14 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
         List<Item> items = QueTObjectStorage.autotranslateItems();
         List<Block> blocks = QueTObjectStorage.autotranslateBlocks();
         if (items.isEmpty()) {
-            ModRegistrator.logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            new ModRegistrator(namespace).logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace + ". Skipping!"));
             return;
         }
         for (Item item : items) {
             auto(item);
         }
         if (blocks.isEmpty()) {
-            ModRegistrator.logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            new ModRegistrator(namespace).logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace) + ". Skipping!");
             return;
         }
         for (Block block : blocks ) {
@@ -105,7 +100,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     public void translateAllTabs() {
         List<ResourceKey<CreativeModeTab>> tabs = QueTObjectStorage.getTabs();
         if (tabs.isEmpty()) {
-            ModRegistrator.logInfo("No tabs registered in " + QTTranslationBuilder.snakeToTitleCase(ModRegistrator.namespace()) + ". Skipping!");
+            new ModRegistrator(namespace).logInfo("No tabs registered in " + QTTranslationBuilder.snakeToTitleCase(namespace) + ". Skipping!");
             return;
         }
         for (ResourceKey<CreativeModeTab> tab : tabs) {
@@ -114,7 +109,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     }
 
     public void addTooltip(Item item, String translation) {
-        this.builder.add("tooltip." + ModRegistrator.namespace() + getPath(item), translation);
+        this.builder.add("tooltip." + namespace + getPath(item), translation);
     }
 
     public void addPaintingTitle(ResourceKey<PaintingVariant> key, String translation) {
@@ -129,7 +124,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     }
 
     public void addStat(String name, String translation) {
-        this.builder.add(Identifier.fromNamespaceAndPath(ModRegistrator.namespace(), name).toLanguageKey("stat"), translation);
+        this.builder.add(Identifier.fromNamespaceAndPath(namespace, name).toLanguageKey("stat"), translation);
     }
 
     /**
