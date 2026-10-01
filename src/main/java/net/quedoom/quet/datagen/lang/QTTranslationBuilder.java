@@ -83,17 +83,17 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
         List<Block> blocks = QueTObjectStorage.autotranslateBlocks();
         if (items.isEmpty()) {
             new ModRegistrator(namespace).logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace + ". Skipping!"));
-            return;
-        }
-        for (Item item : items) {
-            auto(item);
+        } else {
+            for (Item item : items) {
+                auto(item);
+            }
         }
         if (blocks.isEmpty()) {
             new ModRegistrator(namespace).logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace) + ". Skipping!");
-            return;
-        }
-        for (Block block : blocks ) {
-            auto(block);
+        } else {
+            for (Block block : blocks ) {
+                auto(block);
+            }
         }
     }
 
