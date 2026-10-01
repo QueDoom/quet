@@ -1,7 +1,4 @@
-package net.quedoom.villager;
-
-import com.sun.jdi.IntegerValue;
-import net.minecraft.util.StringRepresentable;
+package net.quedoom.quet.villager;
 
 public enum VillagerLevels {
     NOVICE,

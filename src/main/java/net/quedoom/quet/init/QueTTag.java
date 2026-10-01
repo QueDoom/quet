@@ -14,11 +14,43 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.quedoom.quet.misc.GetPath;
+import net.quedoom.quet.villager.QTVillagerTrade;
 import org.jspecify.annotations.NonNull;
 
 
 public class QueTTag {
-    public class QTItemTags extends ModRegistrator {
+    private final String namespace;
+
+    private QueTTag(String namespace) {
+        this.namespace = namespace;
+    }
+    public static QueTTag builder(String namespace) {
+        return new QueTTag(namespace);
+    }
+
+    public QTItemTags item() {
+        return new QTItemTags(namespace);
+    }
+    public QTBlockTags block() {
+        return new QTBlockTags(namespace);
+    }
+    public QTBlockEntityTags blockEntity() {
+        return new QTBlockEntityTags(namespace);
+    }
+    public QTEntityTags entity() {
+        return new QTEntityTags(namespace);
+    }
+    public QTFluidTags fluid() {
+        return new QTFluidTags(namespace);
+    }
+    public QTPotionTags potion() {
+        return new QTPotionTags(namespace);
+    }
+    public QTVillagerTradeTags villagerTrade() {
+        return new QTVillagerTradeTags(namespace);
+    }
+
+    public static class QTItemTags extends ModRegistrator {
         public QTItemTags(@NonNull String namespace) {
             super(namespace);
         }
@@ -32,7 +64,7 @@ public class QueTTag {
         }
 
     }
-    public class QTBlockTags extends ModRegistrator {
+    public static class QTBlockTags extends ModRegistrator {
         public QTBlockTags(@NonNull String namespace) {
             super(namespace);
         }
@@ -52,7 +84,7 @@ public class QueTTag {
            return create("needs_" + material);
         }
     }
-    public class QTBlockEntityTags extends ModRegistrator {
+    public static class QTBlockEntityTags extends ModRegistrator {
         public QTBlockEntityTags(@NonNull String namespace) {
             super(namespace);
         }
@@ -61,7 +93,7 @@ public class QueTTag {
             return TagKey.create(Registries.BLOCK_ENTITY_TYPE, of(name));
         }
     }
-    public class QTEntityTags extends ModRegistrator {
+    public static class QTEntityTags extends ModRegistrator {
         public QTEntityTags(@NonNull String namespace) {
             super(namespace);
         }
@@ -70,7 +102,7 @@ public class QueTTag {
             return TagKey.create(Registries.ENTITY_TYPE, of(name));
         }
     }
-    public class QTFluidTags extends ModRegistrator {
+    public static class QTFluidTags extends ModRegistrator {
         public QTFluidTags(@NonNull String namespace) {
             super(namespace);
         }
@@ -79,8 +111,8 @@ public class QueTTag {
             return TagKey.create(Registries.FLUID, of(name));
         }
     }
-    public class TQPotionTags extends ModRegistrator {
-        public TQPotionTags(@NonNull String namespace) {
+public static class QTPotionTags extends ModRegistrator {
+        public QTPotionTags(@NonNull String namespace) {
             super(namespace);
         }
 
@@ -88,7 +120,7 @@ public class QueTTag {
             return TagKey.create(Registries.POTION, of(name));
         }
     }
-    public class QTVillagerTradeTags extends ModRegistrator {
+    public static class QTVillagerTradeTags extends ModRegistrator {
         public QTVillagerTradeTags(@NonNull String namespace) {
             super(namespace);
         }

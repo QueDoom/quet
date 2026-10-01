@@ -1,4 +1,4 @@
-package net.quedoom.villager;
+package net.quedoom.quet.villager;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;

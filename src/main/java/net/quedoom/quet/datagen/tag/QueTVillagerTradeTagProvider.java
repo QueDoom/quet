@@ -7,7 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.trading.VillagerTrade;
-import net.quedoom.villager.QTVillagerTrade;
+import net.quedoom.quet.villager.QTVillagerTrade;
 
 import java.util.concurrent.CompletableFuture;
 
