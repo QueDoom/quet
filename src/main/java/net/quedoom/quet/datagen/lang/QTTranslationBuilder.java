@@ -89,7 +89,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
             }
         }
         if (blocks.isEmpty()) {
-            new ModRegistrator(namespace).logInfo("No Items set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace) + ". Skipping!");
+            new ModRegistrator(namespace).logInfo("No Blocks set to be auto translated in " + QTTranslationBuilder.snakeToTitleCase(namespace) + ". Skipping!");
         } else {
             for (Block block : blocks ) {
                 auto(block);
