@@ -25,15 +25,15 @@ java {
 }
 
 modrinth {
-	token = dotenv['MODRINTH_TOKEN'] ?: System.getenv("MODRINTH_TOKEN") // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
-	projectId = project.namespace // This can be the project ID or the slug. Either will work!
-	versionNumber = project.version // You don't need to set this manually. Will fail if Modrinth has this version already
-	versionType = "release" // This is the default -- can also be `beta` or `alpha`
-	uploadFile = tasks.jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+	token = dotenv['MODRINTH_TOKEN'] ?: System.getenv("MODRINTH_TOKEN")
+	projectId = project.namespace
+	versionNumber = project.version
+	versionType = "release"
+	uploadFile = tasks.jar
 	additionalFiles = [tasks.sourcesJar]
-	gameVersions = [project.minecraft_version] // Must be an array, even with only one version
-	loaders = ["fabric"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
-	dependencies { // A special DSL for creating dependencies
+	gameVersions = [project.minecraft_version]
+	loaders = ["fabric"] // Must also be an array
+	dependencies {
 		required.project "fabric-api"
 	}
 }
@@ -41,11 +41,17 @@ modrinth {
 
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Cassian's Maven"
+				url = uri("https://maven.cassian.cc")
+			}
+		}
+		filter {
+			includeGroupAndSubgroups("cc.cassian")
+		}
+	}
 }
 
 publishing {
@@ -68,6 +74,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${rrv_version}+${minecraft_version}")
 }
 
 processResources {
