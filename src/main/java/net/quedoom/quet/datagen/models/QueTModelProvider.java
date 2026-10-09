@@ -10,9 +10,11 @@ public abstract class QueTModelProvider extends FabricModelProvider {
         super(output);
     }
 
+    protected abstract String namespace();
+
     @Override
     public void generateItemModels(ItemModelGenerators itemModelGenerators) {
-        generateItemModels(itemModelGenerators, QTItemModelGenerators.of(itemModelGenerators));
+        generateItemModels(itemModelGenerators, QTItemModelGenerators.of(itemModelGenerators, namespace()));
     }
 
     public abstract void generateItemModels(ItemModelGenerators itemModelGenerators, QTItemModelGenerators qtItemModelGenerators);

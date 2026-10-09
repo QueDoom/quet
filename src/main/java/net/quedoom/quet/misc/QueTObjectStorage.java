@@ -61,11 +61,19 @@ public class QueTObjectStorage {
     //region Autotranslate
     private static List<Item> AUTOTRANSLATE_ITEMS = new ArrayList<>();
     private static List<Block> AUTOTRANSLATE_BLOCKS = new ArrayList<>();
+    private static List<Item> AUTOFLAT_ITEMS = new ArrayList<>();
+
     public static void addAutotranslate(Item item) {
         AUTOTRANSLATE_ITEMS.add(item);
     }
     public static void addAutotranslate(Item... items) {
         AUTOTRANSLATE_ITEMS.addAll(Arrays.asList(items));
+    }
+    public static void addAutoflat(Item item) {
+        AUTOFLAT_ITEMS.add(item);
+    }
+    public static void addAutoflat(Item... items) {
+        AUTOFLAT_ITEMS.addAll(Arrays.asList(items));
     }
     public static void addAutotranslate(Block block) {
         AUTOTRANSLATE_BLOCKS.add(block);
@@ -75,6 +83,9 @@ public class QueTObjectStorage {
     }
     public static List<Item> autotranslateItems() {
         return AUTOTRANSLATE_ITEMS;
+    }
+    public static List<Item> automodel() {
+        return AUTOFLAT_ITEMS;
     }
     public static List<Block> autotranslateBlocks() {
         return AUTOTRANSLATE_BLOCKS;

@@ -1,5 +1,6 @@
 package net.quedoom.quet.init;
 
+import com.mojang.datafixers.types.Func;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -65,6 +66,17 @@ public class QueTItem extends ModRegistrator {
     }
     public Item register(ResourceKey<Item> key, boolean autoTranslate) {
         return register(key, Item::new, new Item.Properties(), autoTranslate);
+    }
+
+    public Item registerFlatItem(String name, Function<Item.Properties, Item> function, Item.Properties properties) {
+        Item automodelItem = register(create(name), function, properties);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+    public Item registerFlatItem(String name, Function<Item.Properties, Item> function, Item.Properties properties, boolean autoTranslate) {
+        Item automodelItem = register(create(name), function, properties, autoTranslate);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
     }
 
     public Item register(ResourceKey<Item> key, Function<Item.Properties, Item> itemFactory, Item.Properties properties, boolean autoTranslate) {
