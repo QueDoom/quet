@@ -79,6 +79,39 @@ public class QueTItem extends ModRegistrator {
         return automodelItem;
     }
 
+    public Item registerFlatItem(String name, Item.Properties properties) {
+        Item automodelItem = register(create(name), Item::new, properties);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+    public Item registerFlatItem(String name, Item.Properties properties, boolean autoTranslate) {
+        Item automodelItem = register(create(name), Item::new, properties, autoTranslate);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+
+    public Item registerFlatItem(String name, Function<Item.Properties, Item> function) {
+        Item automodelItem = register(create(name), function);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+    public Item registerFlatItem(String name, Function<Item.Properties, Item> function, boolean autoTranslate) {
+        Item automodelItem = register(create(name), function, autoTranslate);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+
+    public Item registerFlatItem(String name) {
+        Item automodelItem = register(create(name));
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+    public Item registerFlatItem(String name,  boolean autoTranslate) {
+        Item automodelItem = register(create(name), autoTranslate);
+        QueTObjectStorage.addAutoflat(automodelItem);
+        return automodelItem;
+    }
+
     public Item register(ResourceKey<Item> key, Function<Item.Properties, Item> itemFactory, Item.Properties properties, boolean autoTranslate) {
         Item item = itemFactory.apply(properties.setId(key));
         if (item instanceof BlockItem blockItem) {
