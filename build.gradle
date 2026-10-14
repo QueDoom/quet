@@ -52,6 +52,10 @@ repositories {
 			includeGroupAndSubgroups("cc.cassian")
 		}
 	}
+
+	maven {
+		url 'https://maven.blamejared.com'
+	}
 }
 
 publishing {
@@ -76,6 +80,8 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${rrv_version}+${minecraft_version}")
+
+	implementation("net.darkhax.pricklemc:prickle-fabric-${minecraft_version}:${minecraft_version}.${prickle_version}")
 }
 
 processResources {

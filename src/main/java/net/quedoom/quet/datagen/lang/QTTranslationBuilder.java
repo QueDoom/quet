@@ -1,5 +1,6 @@
 package net.quedoom.quet.datagen.lang;
 
+import net.darkhax.pricklemc.common.api.annotations.Value;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
@@ -16,6 +17,7 @@ import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
@@ -95,6 +97,19 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
                 auto(block);
             }
         }
+    }
+
+    public void autoTranslatePrickleConfigs(String customNamespace, Class<?> configClass) {
+        for (Field field : configClass.getDeclaredFields()) {
+            Value meta = field.getAnnotation(Value.class);
+            if (meta == null) continue;
+            builder.add(customNamespace + ".options." + field.getName(), QTTranslationBuilder.snakeToTitleCase(field.getName()));
+        }
+        builder.add(customNamespace + ".options", snakeToTitleCase(customNamespace + "_options"));
+    }
+
+    public void autoTranslatePrickleConfigs(Class<?> configClass) {
+        autoTranslatePrickleConfigs(namespace, configClass);
     }
 
     public void translateAllTabs() {
