@@ -42,7 +42,7 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     }
 
     public void auto(ResourceKey<CreativeModeTab> tab) {
-        String translateLeft = namespace + ".creativeModeTab." + tab.identifier().getNamespace();
+        String translateLeft =  "creativeModeTab." + namespace + '.' + tab.identifier().getNamespace();
         this.builder.add(translateLeft, snakeToTitleCase(tab.identifier().getNamespace()));
     }
 
