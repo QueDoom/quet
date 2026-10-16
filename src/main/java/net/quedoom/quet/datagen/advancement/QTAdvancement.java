@@ -4,6 +4,7 @@ import net.minecraft.advancements.*;
 import net.minecraft.resources.Identifier;
 import net.quedoom.quet.datagen.lang.QTTranslationBuilder;
 import net.quedoom.quet.misc.QueTObjectStorage;
+import net.quedoom.quet.mixin.accessor.AdvancementBuilderAccessor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
@@ -75,22 +76,22 @@ public class QTAdvancement {
         }
 
         public Builder rewards(final AdvancementRewards rewards) {
-            this.advancementBuilder = this.advancementBuilder.rewards(rewards);
+            this.advancementBuilder.rewards(rewards);
             return this;
         }
 
         public Builder addCriterion(final String name, final Criterion<?> criterion) {
-            this.advancementBuilder.criteria.put(name, criterion);
+            this.advancementBuilder.addCriterion(name, criterion);
             return this;
         }
 
         public Builder requirements(final AdvancementRequirements.Strategy strategy) {
-            this.advancementBuilder.requirementsStrategy = strategy;
+            this.advancementBuilder.requirements(strategy);
             return this;
         }
 
         public Builder requirements(final AdvancementRequirements requirements) {
-            this.advancementBuilder.requirements = Optional.of(requirements);
+            this.advancementBuilder.requirements(requirements);
             return this;
         }
 
@@ -103,9 +104,10 @@ public class QTAdvancement {
          */
         public QTAdvancement buildWithTranslations(final Consumer<AdvancementHolder> output,
                                    @Nullable String translatedName, @Nullable String translatedDescription) {
-            Map<String, Criterion<?>> criteria = this.advancementBuilder.criteria.buildOrThrow();
-            AdvancementRequirements requirements = this.advancementBuilder.requirements.orElseGet(() -> this.advancementBuilder.requirementsStrategy.create(criteria.keySet()));
-            Advancement advancement = new Advancement(this.advancementBuilder.parent, this.advancementBuilder.display, this.advancementBuilder.rewards, criteria, requirements, false);
+            AdvancementBuilderAccessor acc = (AdvancementBuilderAccessor) this.advancementBuilder;
+            Map<String, Criterion<?>> criteria = acc.quet$getCriteria().buildOrThrow();
+            AdvancementRequirements requirements = acc.quet$getRequirements().orElseGet(() -> acc.quet$getRequirementsStrategy().create(criteria.keySet()));
+            Advancement advancement = new Advancement(acc.quet$getParent(), acc.quet$getDisplay(), acc.quet$getRewards(), criteria, requirements, false);
             AdvancementHolder aHolder = new AdvancementHolder(Identifier.fromNamespaceAndPath(this.namespace, this.pageName + '/' + this.untranslatedName), advancement);
             output.accept(aHolder);
             QTAdvancement qtAdvancement = new QTAdvancement(aHolder, untranslatedName, pageName, translatedName, translatedDescription);
@@ -119,14 +121,7 @@ public class QTAdvancement {
          * @return Finished {@link QTAdvancement}
          */
         public QTAdvancement build(final Consumer<AdvancementHolder> output) {
-            Map<String, Criterion<?>> criteria = this.advancementBuilder.criteria.buildOrThrow();
-            AdvancementRequirements requirements = this.advancementBuilder.requirements.orElseGet(() -> this.advancementBuilder.requirementsStrategy.create(criteria.keySet()));
-            Advancement advancement = new Advancement(this.advancementBuilder.parent, this.advancementBuilder.display, this.advancementBuilder.rewards, criteria, requirements, false);
-            AdvancementHolder aHolder = new AdvancementHolder(Identifier.fromNamespaceAndPath(this.namespace, this.pageName + '/' + this.untranslatedName), advancement);
-            output.accept(aHolder);
-            QTAdvancement qtAdvancement = new QTAdvancement(aHolder, untranslatedName, pageName, null, null);
-            QueTObjectStorage.addAutotranslate(qtAdvancement);
-            return qtAdvancement;
+            return buildWithTranslations(output, null, null);
         }
     }
 }
