@@ -4,11 +4,8 @@ import net.minecraft.advancements.*;
 import net.minecraft.resources.Identifier;
 import net.quedoom.quet.datagen.lang.QTTranslationBuilder;
 import net.quedoom.quet.misc.QueTObjectStorage;
-import net.quedoom.quet.mixin.accessor.AdvancementBuilderAccessor;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class QTAdvancement {
@@ -95,20 +92,10 @@ public class QTAdvancement {
             return this;
         }
 
-        /**
-         * Finish the Advancement creation
-         * @param output It will be called "consumer" in the generator
-         * @param translatedName The name of the advancement to see in-game
-         * @param translatedDescription The description you'll see if you hover the advancement in chat or in the menu
-         * @return Finished {@link QTAdvancement} with translations (if you run {@link QTTranslationBuilder#autoTranslateAllAdvancements()}
-         */
-        public QTAdvancement buildWithTranslations(final Consumer<AdvancementHolder> output,
-                                   @Nullable String translatedName, @Nullable String translatedDescription) {
-            AdvancementBuilderAccessor acc = (AdvancementBuilderAccessor) this.advancementBuilder;
-            Map<String, Criterion<?>> criteria = acc.quet$getCriteria().buildOrThrow();
-            AdvancementRequirements requirements = acc.quet$getRequirements().orElseGet(() -> acc.quet$getRequirementsStrategy().create(criteria.keySet()));
-            Advancement advancement = new Advancement(acc.quet$getParent(), acc.quet$getDisplay(), acc.quet$getRewards(), criteria, requirements, false);
-            AdvancementHolder aHolder = new AdvancementHolder(Identifier.fromNamespaceAndPath(this.namespace, this.pageName + '/' + this.untranslatedName), advancement);
+        private QTAdvancement buildInternal(Consumer<AdvancementHolder> output,
+                                            @Nullable String translatedName, @Nullable String translatedDescription) {
+            Identifier id = Identifier.fromNamespaceAndPath(this.namespace, this.pageName + '/' + this.untranslatedName);
+            AdvancementHolder aHolder = this.advancementBuilder.build(id);
             output.accept(aHolder);
             QTAdvancement qtAdvancement = new QTAdvancement(aHolder, untranslatedName, pageName, translatedName, translatedDescription);
             QueTObjectStorage.addAutotranslate(qtAdvancement);
@@ -116,12 +103,23 @@ public class QTAdvancement {
         }
 
         /**
+         * Finish the Advancement creation
+         * @param output It will be called "consumer" in the generator
+         * @param translatedName The name of the advancement to see in-game
+         * @param translatedDescription The description you'll see if you hover the advancement in chat or in the menu
+         * @return Finished {@link QTAdvancement} with translations (if you run {@link QTTranslationBuilder#autoTranslateAllAdvancements()}
+         */
+        public QTAdvancement buildWithTranslations(Consumer<AdvancementHolder> output,
+                                                   @Nullable String translatedName, @Nullable String translatedDescription) {
+            return buildInternal(output, translatedName, translatedDescription);
+        }
+        /**
          * Use this only for advancements that are never shown.
          * @param output It will be called "consumer" in the generator
          * @return Finished {@link QTAdvancement}
          */
-        public QTAdvancement build(final Consumer<AdvancementHolder> output) {
-            return buildWithTranslations(output, null, null);
+        public QTAdvancement build(Consumer<AdvancementHolder> output) {
+            return buildInternal(output, null, null);
         }
     }
 }

@@ -3,8 +3,7 @@
   "package": "net.quedoom.quet.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "RemindToClearStorage",
-    "accessor.AdvancementBuilderAccessor"
+    "RemindToClearStorage"
   ],
   "injectors": {
     "defaultRequire": 1
