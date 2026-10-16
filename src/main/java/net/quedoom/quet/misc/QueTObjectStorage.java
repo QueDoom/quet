@@ -1,10 +1,12 @@
 package net.quedoom.quet.misc;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.quedoom.quet.datagen.advancement.QTAdvancement;
 import net.quedoom.quet.datagen.tag.QueTItemTagProvider;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class QueTObjectStorage {
         REGISTERED_WOLF_ARMOR = new ArrayList<>();
         AUTOTRANSLATE_ITEMS = new ArrayList<>();
         AUTOTRANSLATE_BLOCKS = new ArrayList<>();
+        ADVANCEMENTS = new ArrayList<>();
         REGISTERED_SWORDS = new ArrayList<>();
         REGISTERED_AXES = new ArrayList<>();
         REGISTERED_PICKAXES = new ArrayList<>();
@@ -62,6 +65,7 @@ public class QueTObjectStorage {
     private static List<Item> AUTOTRANSLATE_ITEMS = new ArrayList<>();
     private static List<Block> AUTOTRANSLATE_BLOCKS = new ArrayList<>();
     private static List<Item> AUTOFLAT_ITEMS = new ArrayList<>();
+    private static List<QTAdvancement> ADVANCEMENTS = new ArrayList<>();
 
     public static void addAutotranslate(Item item) {
         AUTOTRANSLATE_ITEMS.add(item);
@@ -81,6 +85,12 @@ public class QueTObjectStorage {
     public static void addAutotranslate(Block... blocks) {
         AUTOTRANSLATE_BLOCKS.addAll(Arrays.asList(blocks));
     }
+    public static void addAutotranslate(QTAdvancement qtAdvancement) {
+        ADVANCEMENTS.add(qtAdvancement);
+    }
+    public static void addAutotranslate(QTAdvancement... qtAdvancements) {
+        ADVANCEMENTS.addAll(Arrays.asList(qtAdvancements));
+    }
     public static List<Item> autotranslateItems() {
         return AUTOTRANSLATE_ITEMS;
     }
@@ -89,6 +99,10 @@ public class QueTObjectStorage {
     }
     public static List<Block> autotranslateBlocks() {
         return AUTOTRANSLATE_BLOCKS;
+    }
+
+    public static List<QTAdvancement> advancements() {
+        return ADVANCEMENTS;
     }
     //endregion Autotranslate
 

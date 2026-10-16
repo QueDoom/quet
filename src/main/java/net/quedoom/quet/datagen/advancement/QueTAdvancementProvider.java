@@ -3,14 +3,16 @@ package net.quedoom.quet.datagen.advancement;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.core.Holder;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class QueTAdvancementProvider extends FabricAdvancementProvider {
-    protected QueTAdvancementProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+    public QueTAdvancementProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
     }
 
@@ -18,8 +20,13 @@ public abstract class QueTAdvancementProvider extends FabricAdvancementProvider 
 
     @Override
     public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer) {
-        generateAdvancement(registryLookup, consumer, new QTAdvancementHolderConsumer(consumer, namespace()));
+        generateAdvancements(registryLookup, consumer, new QTAdvancementHolderConsumer(consumer, namespace()));
     }
 
-    public abstract void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer, QTAdvancementHolderConsumer qtConsumer);
+    public abstract void generateAdvancements(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer, QTAdvancementHolderConsumer qtConsumer);
+
+    protected static Criterion<InventoryChangeTrigger.TriggerInstance> singleItemTrigger(Item item) {
+        return InventoryChangeTrigger.TriggerInstance.hasItems(item);
+    }
+
 }

@@ -2,10 +2,13 @@ package net.quedoom.quet.datagen.advancement;
 
 import net.minecraft.advancements.*;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.quedoom.quet.init.ModRegistrator;
+import net.quedoom.quet.misc.QTLogger;
 
 import java.util.function.Consumer;
 
@@ -14,81 +17,86 @@ public record QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer, 
     public QTAdvancementHolderConsumer(Consumer<AdvancementHolder> consumer, String namespace) {
         this(consumer, new ModRegistrator(namespace));
     }
-    
-    public AdvancementHolder newRewardsHolder(Item item, String name,
-                                                      AdvancementType type, Criterion<?> trigger, AdvancementRewards.Builder rewards) {
-        return Advancement.Builder.advancement()
-                .display(
-                        item,
-                        modRegistrator.translatable("advancement", "title." + name),
-                        modRegistrator.translatable("advancement", "description." + name),
+
+    public QTAdvancement.Builder builderWithoutParent(ItemLike display, String pageName, String name, AdvancementType type, boolean showToast, boolean announceToChat) {
+        return new QTAdvancement.Builder(
+                Advancement.Builder.advancement().display(
+                        display,
+                        modRegistrator.translatable("advancementTitle", name),
+                        modRegistrator.translatable("advancementDescription", name),
+                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                        type,
+                        showToast,
+                        announceToChat,
+                        false
+                        ),
+                name, modRegistrator.namespace(), pageName
+        );
+    }
+    public QTAdvancement.Builder builder(QTAdvancement parent, ItemLike display, String name, AdvancementType type,
+                                         boolean showToast, boolean announceChat, boolean hidden) {
+        return new QTAdvancement.Builder(
+                Advancement.Builder.advancement().display(
+                        display,
+                        modRegistrator.translatable("advancementTitle", name),
+                        modRegistrator.translatable("advancementDescription", name),
+                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                        type,
+                        showToast,
+                        announceChat,
+                        hidden
+                        )
+                        .parent(parent.holder()),
+                name, modRegistrator.namespace(), parent.pageName
+        );
+    }
+    public QTAdvancement.Builder builder(QTAdvancement parent, ItemLike display, String name, AdvancementType type,
+                                         boolean showToast, boolean announceChat) {
+        return new QTAdvancement.Builder(
+                Advancement.Builder.advancement().display(
+                        display,
+                        modRegistrator.translatable("advancementTitle", name),
+                        modRegistrator.translatable("advancementDescription", name),
+                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                        type,
+                        showToast,
+                        announceChat,
+                        false
+                        )
+                        .parent(parent.holder()),
+                name, modRegistrator.namespace(), parent.pageName
+        );
+    }
+    public QTAdvancement.Builder builderSuperHidden(QTAdvancement parent, ItemLike display, String name, AdvancementType type) {
+        return new QTAdvancement.Builder(
+                Advancement.Builder.advancement().display(
+                        display,
+                        modRegistrator.translatable("advancementTitle", name),
+                        modRegistrator.translatable("advancementDescription", name),
+                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
+                        type,
+                        false,
+                        false,
+                        false
+                        )
+                        .parent(parent.holder()),
+                name, modRegistrator.namespace(), parent.pageName
+        );
+    }
+    public QTAdvancement.Builder builder(QTAdvancement parent, ItemLike display, String name, AdvancementType type) {
+        return new QTAdvancement.Builder(
+                Advancement.Builder.advancement().display(
+                        display,
+                        modRegistrator.translatable("advancementTitle", name),
+                        modRegistrator.translatable("advancementDescription", name),
                         Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
                         type,
                         true,
                         true,
                         false
-                )
-                .rewards(rewards)
-                .addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
-    }
-
-    public AdvancementHolder newRewardsHolder(Item item, String name,
-                                                      AdvancementType type, Criterion<?> trigger, AdvancementRewards.Builder rewards, AdvancementHolder parent) {
-        return Advancement.Builder.advancement()
-                .parent(parent)
-                .display(
-                        item,
-                        modRegistrator.translatable("advancement", "title." + name),
-                        modRegistrator.translatable("advancement", "description." + name),
-                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
-                        type,
-                        true,
-                        true,
-                        false
-                )
-                .rewards(rewards)
-                .addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
-    }
-
-    public AdvancementHolder newItemPickupHolder(Item item, String name,
-                                                         AdvancementType type) {
-        return newHolder(item, name, type,
-                InventoryChangeTrigger.TriggerInstance.hasItems(item));
-    }
-
-    public AdvancementHolder newItemPickupHolder(Item item, String name,
-                                                         AdvancementType type, AdvancementHolder parent) {
-        return newHolder(item, name, type,
-                InventoryChangeTrigger.TriggerInstance.hasItems(item), parent);
-    }
-
-    public AdvancementHolder newHolder(Item item, String name,
-                                               AdvancementType type, Criterion<?> trigger) {
-        return Advancement.Builder.advancement()
-                .display(
-                        item,
-                        modRegistrator.translatable("advancement", "title." + name),
-                        modRegistrator.translatable("advancement", "description." + name),
-                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
-                        type,
-                        true,
-                        true,
-                        false
-                ).addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
-    }
-    public AdvancementHolder newHolder(Item item, String name,
-                                               AdvancementType type, Criterion<?> trigger, AdvancementHolder parent) {
-        return Advancement.Builder.advancement()
-                .parent(parent)
-                .display(
-                        item,
-                        modRegistrator.translatable("advancement", "title." + name),
-                        modRegistrator.translatable("advancement", "description." + name),
-                        Identifier.withDefaultNamespace("gui/advancements/backgrounds/adventure"),
-                        type,
-                        true,
-                        true,
-                        false
-                ).addCriterion(name, trigger).save(consumer, modRegistrator.of(name));
+                        )
+                        .parent(parent.holder()),
+                name, modRegistrator.namespace(), parent.pageName
+        );
     }
 }

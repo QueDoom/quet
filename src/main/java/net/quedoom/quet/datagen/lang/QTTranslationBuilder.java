@@ -2,6 +2,7 @@ package net.quedoom.quet.datagen.lang;
 
 import net.darkhax.pricklemc.common.api.annotations.Value;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -13,12 +14,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
+import net.quedoom.quet.datagen.advancement.QTAdvancement;
 import net.quedoom.quet.init.ModRegistrator;
 import net.quedoom.quet.misc.LocalizedGetPath;
 import net.quedoom.quet.misc.QueTObjectStorage;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
 public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder builder, String namespace) implements LocalizedGetPath {
     public static boolean SHOULD_AUTO_TRANSLATE_BY_DEFAULT = false;
@@ -44,6 +47,27 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
     public void auto(ResourceKey<CreativeModeTab> tab) {
         String translateLeft =  "creativeModeTab." + namespace + '.' + tab.identifier().getPath();
         this.builder.add(translateLeft, snakeToTitleCase(tab.identifier().getPath()));
+    }
+
+    public void auto(QTAdvancement advancement) {
+        ModRegistrator registrator = new ModRegistrator(namespace);
+        AdvancementHolder holder = advancement.holder();
+        String pathName = getLastPartOfPath(getLastPartOfPath(holder.id().getPath()));
+        String translateLeftTitle = registrator.translationString("advancementTitle", pathName);
+        String translateLeftDescription = registrator.translationString("advancementDescription", pathName);
+        this.builder.add(translateLeftTitle, Objects.requireNonNullElseGet(advancement.translatedName, () -> snakeToTitleCase(getLastPartOfPath(pathName))));
+        this.builder.add(translateLeftDescription, Objects.requireNonNullElseGet(advancement.translatedDescription, () -> "Auto translated description for " + snakeToTitleCase(getLastPartOfPath(pathName)) + ". Please add a translation!"));
+    }
+
+    public void autoTranslateAllAdvancements() {
+        ModRegistrator registrator = new ModRegistrator(namespace);
+        List<QTAdvancement> qtAdvancements = QueTObjectStorage.advancements();
+        registrator.LOGGER.info("List: {}", qtAdvancements);
+        if (qtAdvancements.isEmpty())
+            registrator.LOGGER.info("No advancements generated for {}", QTTranslationBuilder.snakeToTitleCase(namespace));
+        for (QTAdvancement qtAdvancement : qtAdvancements) {
+            auto(qtAdvancement);
+        }
     }
 
 
@@ -160,6 +184,15 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
             }
         }
         return result.toString().trim();
+    }
+
+    public static String getLastPartOfPath(String path) {
+        int end = path.length();
+        while (end > 0 && path.charAt(end - 1) == '/') {
+            end--;
+        }
+        int start = path.lastIndexOf('/', end - 1) + 1;
+        return path.substring(start, end);
     }
 
 }
