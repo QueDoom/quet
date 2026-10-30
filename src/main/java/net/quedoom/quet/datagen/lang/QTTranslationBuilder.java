@@ -38,6 +38,11 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
         String snakeCase = getPath(item);
         this.builder.add(item, snakeToTitleCase(snakeCase));
     }
+    public void auto(EntityType<?> entity) {
+        Identifier key = EntityType.getKey(entity);
+        String snakeCase = key.getPath();
+        this.builder.add(entity, snakeToTitleCase(snakeCase));
+    }
     public void auto(TagKey<?> tag) {
         String translateLeft = tag.getTranslationKey();
         String snakeCase = getPath(tag);
