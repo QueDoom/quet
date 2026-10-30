@@ -1,11 +1,9 @@
 package net.quedoom.quet.init;
 
-import com.mojang.datafixers.types.Func;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.food.FoodProperties;
@@ -162,17 +160,32 @@ public class QueTItem extends ModRegistrator {
         return registerBucket(name, fluid, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET), autoTranslate);
     }
 
-    public Item registerSpawnEgg(String name, EntityType entity, Item.Properties properties) {
+    public Item registerSpawnEgg(String name, EntityType<?> entity, Item.Properties properties) {
         return register(create(name), SpawnEggItem::new, properties.spawnEgg(entity));
     }
-    public Item registerSpawnEgg(String name, EntityType entity) {
+    public Item registerSpawnEgg(String name, EntityType<?> entity) {
         return registerSpawnEgg(name, entity, new Item.Properties());
     }
-    public Item registerSpawnEgg(String name, EntityType entity, Item.Properties properties, boolean autoTranslate) {
+    public Item registerSpawnEgg(String name, EntityType<?> entity, Item.Properties properties, boolean autoTranslate) {
         return register(create(name), SpawnEggItem::new, properties.spawnEgg(entity), autoTranslate);
     }
-    public Item registerSpawnEgg(String name, EntityType entity, boolean autoTranslate) {
+    public Item registerSpawnEgg(String name, EntityType<?> entity, boolean autoTranslate) {
         return registerSpawnEgg(name, entity, new Item.Properties(), autoTranslate);
+    }
+    private static String entityTypeToSpawnEgg(EntityType<?> entityType) {
+        return EntityType.getKey(entityType).getPath() + "_spawn_egg";
+    }
+    public Item registerSpawnEgg(EntityType<?> entity, Item.Properties properties) {
+        return register(create(entityTypeToSpawnEgg(entity)), SpawnEggItem::new, properties.spawnEgg(entity));
+    }
+    public Item registerSpawnEgg(EntityType<?> entity) {
+        return registerSpawnEgg(entity, new Item.Properties());
+    }
+    public Item registerSpawnEgg(EntityType<?> entity, Item.Properties properties, boolean autoTranslate) {
+        return register(create(entityTypeToSpawnEgg(entity)), SpawnEggItem::new, properties.spawnEgg(entity), autoTranslate);
+    }
+    public Item registerSpawnEgg(EntityType<?> entity, boolean autoTranslate) {
+        return registerSpawnEgg(entity, new Item.Properties(), autoTranslate);
     }
 
     public Item registerFood(String name, FoodProperties food, Consumable consumable) {
