@@ -176,13 +176,13 @@ public class QueTItem extends ModRegistrator {
         return EntityType.getKey(entityType).getPath() + "_spawn_egg";
     }
     public Item registerSpawnEgg(EntityType<?> entity, Item.Properties properties) {
-        return register(create(entityTypeToSpawnEgg(entity)), SpawnEggItem::new, properties.spawnEgg(entity));
+        return registerSpawnEgg(entityTypeToSpawnEgg(entity), entity, properties.spawnEgg(entity));
     }
     public Item registerSpawnEgg(EntityType<?> entity) {
         return registerSpawnEgg(entity, new Item.Properties());
     }
     public Item registerSpawnEgg(EntityType<?> entity, Item.Properties properties, boolean autoTranslate) {
-        return register(create(entityTypeToSpawnEgg(entity)), SpawnEggItem::new, properties.spawnEgg(entity), autoTranslate);
+        return registerSpawnEgg(entityTypeToSpawnEgg(entity), entity, properties, autoTranslate);
     }
     public Item registerSpawnEgg(EntityType<?> entity, boolean autoTranslate) {
         return registerSpawnEgg(entity, new Item.Properties(), autoTranslate);
