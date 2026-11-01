@@ -133,9 +133,9 @@ public record QTTranslationBuilder(FabricLanguageProvider.TranslationBuilder bui
         for (Field field : configClass.getDeclaredFields()) {
             Value meta = field.getAnnotation(Value.class);
             if (meta == null) continue;
-            builder.add(customNamespace + ".options." + field.getName(), QTTranslationBuilder.snakeToTitleCase(field.getName()));
+            builder.add("options." + customNamespace + '.' + field.getName(), QTTranslationBuilder.snakeToTitleCase(field.getName()));
         }
-        builder.add(customNamespace + ".options", snakeToTitleCase(customNamespace + "_options"));
+        builder.add("options." + customNamespace, snakeToTitleCase(customNamespace + "_options"));
     }
 
     public void autoTranslatePrickleConfigs(Class<?> configClass) {
