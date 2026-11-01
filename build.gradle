@@ -41,6 +41,8 @@ modrinth {
 
 
 repositories {
+	maven { url = "https://api.modrinth.com/maven" }
+	
 	exclusiveContent {
 		forRepository {
 			maven {
