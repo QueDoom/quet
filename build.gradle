@@ -52,6 +52,11 @@ repositories {
 			includeGroupAndSubgroups("cc.cassian")
 		}
 	}
+	maven {
+		name = "Terraformers"
+		url = "https://maven.terraformersmc.com/"
+	}
+
 
 	maven {
 		url 'https://maven.blamejared.com'
@@ -80,6 +85,9 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${rrv_version}+${minecraft_version}")
+
+	implementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+	include(implementation("maven.modrinth:modmenu-badges-lib:${project.modmenu_badges_version}"))
 
 	implementation("net.darkhax.pricklemc:prickle-fabric-${minecraft_version}:${minecraft_version}.${prickle_version}")
 }
