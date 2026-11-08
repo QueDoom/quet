@@ -17,15 +17,4 @@ public abstract class QueTRecipeProvider extends FabricRecipeProvider implements
     public QueTRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
-
-    public void campfireSmelting(RecipeOutput output, RecipeProvider provider, ItemLike out, ItemLike in, RecipeCategory category, int cookingTime) {
-        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(in), category, out, 0, cookingTime)
-                .unlockedBy(RecipeProvider.getHasName(in), provider.has(in))
-                .group(getPath(out.asItem()))
-                .save(output, out + "_from_campfire");
-    }
-
-    public void campfireSmelting(RecipeOutput output, RecipeProvider provider, ItemLike out, ItemLike in, RecipeCategory category) {
-        campfireSmelting(output, provider, out, in, category, 200);
-    }
 }
